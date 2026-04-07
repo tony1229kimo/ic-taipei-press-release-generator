@@ -1,0 +1,6 @@
+{
+  "$schema": "https://schema.zeabur.app/template.json",
+  "build_command": "npm install && npm run build && cd server && npm install",
+  "start_command": "cd server && node --import tsx index.ts",
+  "listen_port": 3001
+}
