@@ -1,5 +1,4 @@
 {
-  "build_command": "npm install && npm run build && cd server && npm install",
-  "start_command": "cd server && npx tsx index.ts",
+  "plan": "node",
   "serverless": false
 }
