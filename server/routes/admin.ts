@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import {
   indexDocuments,
   loadIndex,
+  saveIndex,
   loadBrandStandards,
   saveBrandStandards,
   loadHistory,
@@ -102,7 +103,6 @@ router.delete('/knowledge-base/documents/:id', (req: Request, res: Response) => 
     index.documents.splice(idx, 1);
     index.totalDocuments = index.documents.length;
 
-    const { saveIndex } = require('../services/knowledgeBase');
     saveIndex(index);
 
     res.json({ success: true });
@@ -129,9 +129,7 @@ router.post('/admin/upload', upload.single('file'), async (req: Request, res: Re
     }
 
     // Add to index
-    const { loadIndex, saveIndex } = require('../services/knowledgeBase');
     const index = loadIndex();
-    const { inferCategory, inferTags } = require('../services/knowledgeBase');
 
     const id = `pr-upload-${Date.now()}`;
     index.documents.push({

@@ -9,7 +9,7 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Install server deps (including devDeps for tsx)
+# Install server deps
 WORKDIR /app/server
 RUN npm ci
 
@@ -26,7 +26,7 @@ COPY --from=builder /app/server ./server
 
 WORKDIR /app/server
 
-# Make tsx available globally
+# Make tsx and other bins available
 ENV PATH="/app/server/node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 ENV PORT=8080

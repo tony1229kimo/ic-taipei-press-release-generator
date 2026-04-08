@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 // Load .env - try both server/.env and project root .env
@@ -30,7 +30,6 @@ app.get('/api/health', (_req, res) => {
 
 // Serve static frontend in production
 const distPath = path.resolve(process.cwd(), '..', 'dist');
-const fs = require('fs');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
   app.get('*', (_req, res) => {
