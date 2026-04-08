@@ -7,7 +7,7 @@
     "dev": "concurrently \"vite\" \"cd server && npm run dev\"",
     "dev:client": "vite",
     "dev:server": "cd server && npm run dev",
-    "build": "tsc -b && vite build && cd server && npm install",
+    "build": "vite build",
     "start": "cd server && npx tsx index.ts",
     "lint": "eslint .",
     "preview": "vite preview"
