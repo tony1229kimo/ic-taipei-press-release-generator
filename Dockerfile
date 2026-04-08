@@ -1,22 +1,27 @@
-FROM node:20
+FROM node:20-slim
 
 WORKDIR /app
 
-# Copy everything
-COPY . .
-
 # Install frontend deps and build
-RUN npm ci && npm run build
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+COPY . .
+RUN npx vite build
 
 # Install server deps
 WORKDIR /app/server
 RUN npm ci
 
-# Set environment
+# Clean up to reduce image size
+WORKDIR /app
+RUN rm -rf node_modules src .git
+
+WORKDIR /app/server
+
 ENV NODE_ENV=production
 ENV PORT=8080
 
 EXPOSE 8080
 
-# Start server
-CMD ["./node_modules/.bin/tsx", "index.ts"]
+# Use npm start which calls tsx
+CMD ["npm", "start"]
