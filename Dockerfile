@@ -1,27 +1,30 @@
 FROM node:20-slim
 
-# Cache buster: 2026-04-08-v2
+# Force fresh build: 2026-04-08-15:30 - removed all wildcard routes
+LABEL build_version="v3-no-wildcards"
+
 WORKDIR /app
 
-# Install frontend deps and build
-COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+# Copy ALL source first to invalidate cache when any file changes
 COPY . .
-RUN npx vite build
+
+# Install frontend deps and build
+RUN npm ci --ignore-scripts && npx vite build
 
 # Install server deps
 WORKDIR /app/server
 RUN npm ci
 
-# Clean up to reduce image size
+# Verify the fix is in the source code
+RUN test -f index.ts && \
+    grep -q "spaFallback" index.ts && \
+    echo "✓ Verified: index.ts has spaFallback middleware (no wildcard routes)"
+
+# Clean up frontend node_modules to save space
 WORKDIR /app
 RUN rm -rf node_modules src .git
 
 WORKDIR /app/server
-
-# Verify the index.ts has the correct fix (no app.get with wildcard)
-RUN grep -q "app.use((_req, res)" index.ts || (echo "ERROR: index.ts missing Express 5 fix!" && exit 1)
-RUN echo "Verified: index.ts has correct Express 5 SPA fallback"
 
 ENV NODE_ENV=production
 ENV PORT=8080

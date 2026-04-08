@@ -29,16 +29,27 @@ app.get('/api/health', (_req, res) => {
 });
 
 // Serve static frontend in production
+// NOTE: No SPA fallback route here — Express 5.x has incompatible
+// path-to-regexp that crashes on wildcards. The static middleware
+// serves the index.html for the root path automatically.
 const distPath = path.resolve(process.cwd(), '..', 'dist');
 if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
-  // Express 5.x SPA fallback — use middleware instead of wildcard route
-  app.use((_req, res) => {
+  app.use(express.static(distPath, { index: 'index.html' }));
+  console.log('[startup] Serving static files from', distPath);
+
+  // Manual SPA fallback as middleware (no path pattern, no wildcards)
+  app.use(function spaFallback(req, res, next) {
+    if (req.method !== 'GET') return next();
+    if (req.path.startsWith('/api')) return next();
     res.sendFile(path.join(distPath, 'index.html'));
   });
-  console.log('Serving static files from', distPath);
 }
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const server = app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`[startup] Server listening on 0.0.0.0:${PORT}`);
+});
+
+server.on('error', (err) => {
+  console.error('[startup] Server error:', err);
+  process.exit(1);
 });
