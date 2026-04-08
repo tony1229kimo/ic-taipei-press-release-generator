@@ -3,6 +3,8 @@ import { buildPrompt, type GenerationInput } from './promptBuilder';
 import { saveGeneration } from './knowledgeBase';
 import { v4 as uuidv4 } from 'uuid';
 
+export type { GenerationInput };
+
 let client: Anthropic | null = null;
 
 function getClient(): Anthropic {

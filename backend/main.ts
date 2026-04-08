@@ -5,7 +5,12 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 
 // Use __dirname for paths so it works regardless of cwd
-const BACKEND_DIR = __dirname;
+// When compiled, __dirname = backend/dist; when running TS, __dirname = backend
+// We need PROJECT_ROOT to point to the repo root in both cases
+const SCRIPT_DIR = __dirname;
+const BACKEND_DIR = path.basename(SCRIPT_DIR) === 'dist'
+  ? path.resolve(SCRIPT_DIR, '..')
+  : SCRIPT_DIR;
 const PROJECT_ROOT = path.resolve(BACKEND_DIR, '..');
 
 // Load .env from project root (Zeabur injects env vars directly, so this is optional)
