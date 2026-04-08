@@ -32,7 +32,8 @@ app.get('/api/health', (_req, res) => {
 const distPath = path.resolve(process.cwd(), '..', 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
-  app.get('*', (_req, res) => {
+  // Express 5.x SPA fallback — use middleware instead of wildcard route
+  app.use((_req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
   console.log('Serving static files from', distPath);
