@@ -1,9 +1,6 @@
 FROM node:20-slim
 
-LABEL build_version="v5-global-tsx"
-
-# Install tsx globally so it's always in PATH
-RUN npm install -g tsx
+LABEL build_version="v6-root-tsx-nodepath"
 
 WORKDIR /app
 
@@ -14,30 +11,26 @@ COPY public ./public
 COPY index.html vite.config.ts tsconfig.json tsconfig.app.json tsconfig.node.json components.json ./
 COPY backend ./backend
 
-# Install frontend deps and build
+# Install root deps (includes tsx) and build frontend
 RUN npm install --no-audit --no-fund && npx vite build
 
-# Install backend deps (use install not ci to handle package.json changes)
+# Install backend deps
 WORKDIR /app/backend
 RUN npm install --no-audit --no-fund
 
-# Verify dependencies installed correctly
-RUN test -d node_modules/express && \
-    test -d node_modules/.bin && \
-    echo "✓ backend/node_modules/express exists" && \
-    ls node_modules/.bin/ | head -5
+# Verify
+RUN test -d node_modules/express && echo "✓ express installed in backend"
+RUN test -f main.ts && grep -q "spaFallback" main.ts && echo "✓ main.ts is correct"
+RUN test -f /app/node_modules/.bin/tsx && echo "✓ tsx installed in root"
 
-# Verify main.ts is correct
-RUN test -f main.ts && \
-    grep -q "spaFallback" main.ts && \
-    echo "✓ backend/main.ts has spaFallback"
+# IMPORTANT: Run from root so tsx is in PATH and process.cwd() is /app
+WORKDIR /app
 
-WORKDIR /app/backend
-
+# NODE_PATH so node can resolve modules from backend/node_modules
+ENV NODE_PATH=/app/backend/node_modules
 ENV NODE_ENV=production
 ENV PORT=8080
-ENV PATH="/app/backend/node_modules/.bin:/usr/local/bin:$PATH"
 
 EXPOSE 8080
 
-CMD ["tsx", "main.ts"]
+CMD ["npm", "start"]

@@ -4,11 +4,17 @@ import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
-// Load .env - try both server/.env and project root .env
-dotenv.config({ override: true }); // server/.env (cwd)
-dotenv.config({ path: path.resolve(process.cwd(), '..', '.env'), override: true }); // project root
+// Use __dirname for paths so it works regardless of cwd
+const BACKEND_DIR = __dirname;
+const PROJECT_ROOT = path.resolve(BACKEND_DIR, '..');
 
-console.log('API Key loaded:', process.env.ANTHROPIC_API_KEY ? 'yes' : 'NO');
+// Load .env from project root (Zeabur injects env vars directly, so this is optional)
+dotenv.config({ path: path.join(BACKEND_DIR, '.env'), override: false });
+dotenv.config({ path: path.join(PROJECT_ROOT, '.env'), override: false });
+
+console.log('[startup] API Key loaded:', process.env.ANTHROPIC_API_KEY ? 'yes' : 'NO');
+console.log('[startup] BACKEND_DIR:', BACKEND_DIR);
+console.log('[startup] PROJECT_ROOT:', PROJECT_ROOT);
 
 import generateRouter from './routes/generate';
 import adminRouter from './routes/admin';
@@ -32,7 +38,7 @@ app.get('/api/health', (_req, res) => {
 // NOTE: No SPA fallback route here — Express 5.x has incompatible
 // path-to-regexp that crashes on wildcards. The static middleware
 // serves the index.html for the root path automatically.
-const distPath = path.resolve(process.cwd(), '..', 'dist');
+const distPath = path.join(PROJECT_ROOT, 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath, { index: 'index.html' }));
   console.log('[startup] Serving static files from', distPath);
