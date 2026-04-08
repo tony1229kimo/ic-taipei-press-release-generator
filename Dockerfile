@@ -24,14 +24,13 @@ COPY --from=builder /app/dist ./dist
 # Copy server with node_modules
 COPY --from=builder /app/server ./server
 
-# Copy root .env if exists (won't fail if missing)
-COPY --from=builder /app/.env* ./
-
 WORKDIR /app/server
 
+# Make tsx available globally
+ENV PATH="/app/server/node_modules/.bin:$PATH"
 ENV NODE_ENV=production
 ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["node", "--import", "tsx", "index.ts"]
+CMD ["tsx", "index.ts"]
