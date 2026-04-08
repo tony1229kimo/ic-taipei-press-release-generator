@@ -43,7 +43,7 @@ app.get('/api/health', (_req, res) => {
 // NOTE: No SPA fallback route here — Express 5.x has incompatible
 // path-to-regexp that crashes on wildcards. The static middleware
 // serves the index.html for the root path automatically.
-const distPath = path.join(PROJECT_ROOT, 'dist');
+const distPath = process.env.FRONTEND_DIST || path.join(PROJECT_ROOT, 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath, { index: 'index.html' }));
   console.log('[startup] Serving static files from', distPath);
