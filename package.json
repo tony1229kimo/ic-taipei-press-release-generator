@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"cd server && npm run dev\"",
+    "dev": "concurrently \"vite\" \"cd backend && npm run dev\"",
     "dev:client": "vite",
-    "dev:server": "cd server && npm run dev",
+    "dev:server": "cd backend && npm run dev",
     "build": "vite build",
-    "start": "cd server && npx tsx index.ts",
+    "start": "cd backend && npx tsx main.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },

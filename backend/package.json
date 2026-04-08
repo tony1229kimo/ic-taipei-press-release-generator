@@ -1,11 +1,11 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "backend",
+  "version": "2.0.0",
+  "description": "InterContinental Taipei Press Release Generator API",
+  "main": "main.ts",
   "scripts": {
-    "dev": "tsx watch index.ts",
-    "start": "tsx index.ts",
+    "dev": "tsx watch main.ts",
+    "start": "tsx main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

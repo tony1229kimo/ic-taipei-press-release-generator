@@ -1,34 +1,34 @@
 FROM node:20-slim
 
-# Force fresh build: 2026-04-08-15:30 - removed all wildcard routes
-LABEL build_version="v3-no-wildcards"
+LABEL build_version="v4-backend-rename"
 
 WORKDIR /app
 
-# Copy ALL source first to invalidate cache when any file changes
-COPY . .
+# Copy ALL source files
+COPY package.json package-lock.json ./
+COPY src ./src
+COPY public ./public
+COPY index.html vite.config.ts tsconfig.json tsconfig.app.json tsconfig.node.json components.json ./
+COPY backend ./backend
 
 # Install frontend deps and build
 RUN npm ci --ignore-scripts && npx vite build
 
-# Install server deps
-WORKDIR /app/server
+# Install backend deps
+WORKDIR /app/backend
 RUN npm ci
 
-# Verify the fix is in the source code
-RUN test -f index.ts && \
-    grep -q "spaFallback" index.ts && \
-    echo "✓ Verified: index.ts has spaFallback middleware (no wildcard routes)"
+# Verify the new file is correct
+RUN test -f main.ts && \
+    grep -q "spaFallback" main.ts && \
+    ! grep -q "app.get('\\*'" main.ts && \
+    echo "✓ backend/main.ts has correct routing"
 
-# Clean up frontend node_modules to save space
-WORKDIR /app
-RUN rm -rf node_modules src .git
-
-WORKDIR /app/server
+WORKDIR /app/backend
 
 ENV NODE_ENV=production
 ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["./node_modules/.bin/tsx", "main.ts"]
