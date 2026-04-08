@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-LABEL build_version="v7-unified-deps"
+LABEL build_version="v8-direct-node"
 
 WORKDIR /app
 
@@ -13,14 +13,18 @@ RUN npm install --no-audit --no-fund
 # Build frontend
 RUN npx vite build
 
-# Verify
-RUN test -f node_modules/.bin/tsx && echo "✓ tsx in root node_modules"
-RUN test -d node_modules/express && echo "✓ express in root node_modules"
+# Verify tsx and express are installed
+RUN ls -la node_modules/.bin/tsx && echo "✓ tsx exists" || (echo "✗ tsx MISSING" && exit 1)
+RUN test -d node_modules/express && echo "✓ express installed"
 RUN test -f backend/main.ts && grep -q "spaFallback" backend/main.ts && echo "✓ main.ts is correct"
+
+# List backend dir
+RUN ls -la backend/
 
 ENV NODE_ENV=production
 ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+# Use absolute path to tsx — bypass any PATH/npm issues
+CMD ["/app/node_modules/.bin/tsx", "/app/backend/main.ts"]
