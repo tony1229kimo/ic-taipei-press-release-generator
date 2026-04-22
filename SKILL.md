@@ -42,23 +42,45 @@ author: InterContinental Taipei PR Team
 
 ---
 
+## F&B 整體策略
+
+### 核心哲學
+> InterContinental Taipei 的 F&B 是一個目的地導向的餐廳與酒吧組合，建立在**現代奢華、匠心精神、故事驅動與文化扎根**之上，旨在贏得臺北頂級餐飲場景，成為全市最受關注的餐飲集團。這不是標準的飯店 F&B 配置，而是酒店的**商業引擎與文化心臟**。
+
+### 策略金字塔
+- **Brand Halo** (頂層): DOSA — 提升酒店整體形象、能見度與長期品牌價值
+- **Margin** (中層): Akira Back、Chinese Restaurant、Rough Cuts — 透過場景、差異化與高端定位產生高客單價
+- **Volume** (底層): Thea Lounge、Yi Social、NTD Eatery — 驅動穩定日常客流與營收
+
+### 三大策略支柱
+| 支柱 | 定位 | 包含場域 | 目標 |
+|------|------|---------|------|
+| **Brand Builders** | 高影響力，創造品牌光環與目的地吸引力 | DOSA、Akira Back、Rough Cuts、Simple Sips | 以卓越、故事性與社群傳播力創造品牌光環 |
+| **Revenue Engines** | 高翻桌率、高客單價驅動商業表現 | Yi Social、Chinese Restaurant | 最大化翻桌率、提升客單價與營運效率 |
+| **Experience Multipliers** | 延伸體驗、驅動增量營收 | Grain & Grace、Thea Lounge、NTD | 延伸停留時間、提升酒水比例與跨場域流動 |
+
 ## 餐廳定位與策略 (F&B Portfolio)
 
-| Rank | 餐廳 | 市場層級 | 核心定位 | 組合角色 |
-|------|------|---------|---------|---------|
-| 1 | **DOSA** | 頂級精緻餐飲 | 米其林背景韓式 Omakase，慶祝與目的地型高端用餐 | Brand Halo 品牌高度象徵 |
-| 2 | **Akira Back** | 國際級目的地餐廳 | 明星主廚現代日式料理，高端社交與話題餐廳 | Destination Driver 話題與流量引擎 |
-| 3 | **Rough Cuts (Grill)** | 現代奢華牛排館 | 以火候與食材為核心，商務與慶祝型牛排館 | Margin Powerhouse 高毛利核心 |
-| 4 | **Chinese Restaurant (TBD)** | 高端現代中餐 | 精緻現代中餐，商務與家庭宴請場域 | Prestige Occasion Venue 高端宴請場域 |
-| 5 | **5F All Day Dining (Buffet)** | 高端自助餐目的地 | 符合台灣市場偏好的高端自助餐 | Volume + Occasion Anchor 流量與場景核心 |
-| 6 | **The Thea (Lobby Lounge)** | 高端生活儀式型 | 植感下午茶與優雅日間社交空間 | Brand Atmosphere Anchor 品牌氛圍核心 |
-| 7 | **NTD (Italian Eatery)** | 高端休閒型餐廳 | 輕鬆高質感義式餐廳，Aperitivo 文化 | Volume Driver 流量入口 |
+| Rank | 餐廳 | 市場層級 | 核心定位 | 組合角色 | 品牌影響力 | 開幕波次 |
+|------|------|---------|---------|---------|---------|---------|
+| 1 | **DOSA** | Fine Dining Prestige | 米其林背景韓式 Omakase by Akira Back | Brand Halo 品牌高度象徵 | VERY HIGH | Wave 2 (8/22) |
+| 2 | **Akira Back** | International Destination | 國際名廚現代日式料理 | Destination Driver 話題與流量引擎 | HIGH | Wave 2 (8/22) |
+| 3 | **Rough Cuts** | Modern Luxury Steakhouse | 以火候與食材為核心，商務與慶祝型牛排館 | Experience Driver 體驗驅動核心 | MEDIUM | Wave 1 (7月底) |
+| 4 | **Chinese Restaurant** | Premium Modern Chinese | 精緻粵菜，商務與家庭宴請場域 | Prestige Occasion Venue 高端宴請場域 | MEDIUM | Wave 3 (9/12) |
+| 5 | **Yi Social** | Premium Buffet Destination | 高端自助餐，海鮮與家庭慶祝 | Volume + Occasion Anchor 流量與場景核心 | LOW | Wave 1 (7月底) |
+| 6 | **Thea Lounge 初遇** | Premium Lifestyle Ritual | 臺灣茶文化下午茶與日間社交空間 | Brand Atmosphere Anchor 品牌氛圍核心 | HIGH | Wave 1 (7月底) |
+| 7 | **NTD Eatery** | Upper Casual Premium | 義式鄰里餐桌 "Near the Dome" | Volume Driver 流量入口 | LOW | Wave 1 (7月底) |
 
 ### 酒吧
-| 酒吧 | 概念 | 定位 |
-|------|------|------|
-| **Chinese Restaurant Bar** | 文化型精釀酒吧 | 穀物與亞洲元素調酒，茶搭餐 (Tea Pairing) |
-| **Steakhouse Bar** | 高端社交酒吧 | 經典調酒與威士忌為核心 |
+| 酒吧 | 概念 | 定位 | 開幕波次 |
+|------|------|------|---------|
+| **Grain & Grace** | 文化型精釀酒吧 | 穀物與亞洲元素調酒，茶搭餐 (Tea Pairing) | Wave 3 (9/12) |
+| **Simple Sips** | 高端社交酒吧 | 經典調酒與威士忌，牛排館延伸 | Wave 1 (7月底) |
+
+### 開幕時程 (Launch Timeline)
+- **Wave 1** (2026年7月底–8月1日): Thea Lounge、NTD Eatery、Yi Social、Rough Cuts、Simple Sips
+- **Wave 2** (2026年8月22日): Akira Back、DOSA
+- **Wave 3** (2026年9月12日): Chinese Restaurant、Grain & Grace
 
 ---
 
