@@ -183,11 +183,20 @@ GET /api/feedback/outcomes/:release_id
 ## 六、開發里程碑
 
 ### M1（3 天）：基礎串接 + 首頁機會橫幅
-- [ ] 雷達新增 `GET /api/insights/opportunities`
-- [ ] 雷達新增 `GET /api/insights/competitive-summary`
-- [ ] 產生器：API 用戶端（`src/api/radar.ts`）
-- [ ] 產生器 `GeneratorPage` 頂部加「今日 3 個機會」橫幅
-- [ ] 機會卡點擊 → 預填表單
+
+**產生器端：✅ 已完成（2026-05-25）**
+- [x] 後端 proxy 路由 `backend/routes/radar.ts`（含 mock fallback）
+- [x] 前端 API 用戶端 `src/api/radar.ts`
+- [x] `OpportunityBanner` 元件 `src/components/intel/OpportunityBanner.tsx`
+- [x] `GeneratorPage` 頂部加「今日機會」橫幅
+- [x] 機會卡點擊 → 預填表單（類別、面向、主題、關鍵資訊）
+- [x] Sonner Toaster 提示「已套用情報」
+- [x] 環境變數 `RADAR_API_BASE`（含 `RADAR_API_KEY`）設定後自動切換真實 API
+
+**雷達端：⏳ 待辦（需另開 session 在 hotel-news-radar repo 開發）**
+- [ ] 雷達新增 `GET /api/insights/opportunities?limit=N`
+- [ ] 雷達新增 `GET /api/insights/competitive-summary?days=N`
+- [ ] 部署後設定產生器 Zeabur 環境變數 `RADAR_API_BASE`、`RADAR_API_KEY`
 
 ### M2（3 天）：情報雷達分頁
 - [ ] 側邊欄新增「🛰️ 情報雷達」
@@ -226,9 +235,65 @@ GET /api/feedback/outcomes/:release_id
 
 ---
 
-## 八、開工時的第一句話
+## 八、雷達端開工指令（複製到 hotel-news-radar 的 Claude session）
 
-直接跟 Claude 說：
-> 「打開 `docs/competitive-intel-plan.md`，從 **M1** 開始：先在 hotel-news-radar 加 `GET /api/insights/opportunities` 和 `GET /api/insights/competitive-summary` 兩個 API。」
+開啟針對 `hotel-news-radar` repo 的新 session，貼這段：
 
-注意：M1 第一步要切換到 `hotel-news-radar` repo 開發，第二步才回到本 repo 接 API。
+```
+我們要把 hotel-news-radar 開放給 ic-taipei-press-release-generator 消費。
+產生器端已經做好客戶端 + mock 資料 fallback（這個 repo 的
+backend/routes/radar.ts 是參考實作），現在請你做雷達端的兩個 API：
+
+1. GET /api/insights/opportunities?limit=3
+   回傳：{ opportunities: Opportunity[] }
+   每個 Opportunity 結構（產生器這邊已有 TypeScript 定義）：
+   {
+     id: string;
+     title: string;              // 「聖誕下午茶主題本週聲量 +340%」
+     summary: string;            // 1-2 句白話解釋
+     heat: 'high' | 'rising' | 'medium';
+     topic: string;              // 「聖誕下午茶」
+     suggestedAngles: string[];  // ["主廚特調", "限定甜點"]
+     prefillCategory?: 'general' | 'business' | 'lifestyle';
+     prefillAngleItems?: string[];  // 必須對應產生器 allAngleGroups
+                                    // 的精確 items 字串（例如「季節主題下午茶」）
+     prefillTopic?: string;
+     prefillKeyFacts?: string;
+     relatedCompetitors?: Array<{ name, articleTitle, url, publishedAt }>;
+     topicTrend?: { count7d: number; growthPct: number };
+     createdAt: string;          // ISO timestamp
+   }
+
+   實作邏輯（吃現有資料）：
+   - 從 articles + article_insights 表抓近 7 天競品文章
+   - 依 opportunity tag 分組計算聲量（聲量 / 成長率）
+   - 過濾出 IC（自己）近 30 天未發稿的主題
+   - 用 Claude Opus 4.7 整合成 3 則 opportunity 摘要 + 寫稿切角建議
+   - 排序：heat=high → rising → medium
+   - 可加 cache（每 6 小時更新一次即可）
+
+2. GET /api/insights/competitive-summary?days=7
+   回傳：
+   {
+     periodDays: number;
+     totalMentions: number;
+     topCompetitors: Array<{ name; mentionCount; topTopics: string[] }>;
+     emergingTopics: string[];
+     generatedAt: string;
+   }
+
+   簡單聚合 SQL 就能算出來，topTopics / emergingTopics 從 opportunity tags 來。
+
+請：
+- 不需要新增 DB 表，純讀現有資料
+- 加一個簡單的 Bearer token 認證（讀 env `RADAR_API_KEY`），請也回給我這把 key
+- 部署到 Zeabur 後告訴我 base URL，我會在產生器端設 RADAR_API_BASE
+- 結束時把參考的 TypeScript interface（可從產生器這份 plan 看到）也寫進雷達的 README
+```
+
+## 九、開工時的第一句話（產生器端後續任務）
+
+雷達端 API 上線後，回到本 repo 跟 Claude 說：
+> 「打開 `docs/competitive-intel-plan.md`，雷達端 API 已上線，URL 是 [...]，
+>  幫我設定 Zeabur 的 `RADAR_API_BASE` 環境變數並驗證真實資料能拉到。
+>  然後開始 M2：新增 `/intel` 分頁。」

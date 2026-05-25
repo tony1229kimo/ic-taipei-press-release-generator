@@ -4,6 +4,7 @@ import AppShell from '@/components/layout/AppShell';
 import GeneratorPage from '@/pages/GeneratorPage';
 import HistoryPage from '@/pages/HistoryPage';
 import AdminPage from '@/pages/AdminPage';
+import { Toaster } from '@/components/ui/sonner';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Toaster richColors />
     </QueryClientProvider>
   );
 }
