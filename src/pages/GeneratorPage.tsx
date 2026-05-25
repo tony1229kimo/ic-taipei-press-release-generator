@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback } from 'react';
-import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,8 +11,6 @@ import {
   Sparkles, ChevronRight, UserPlus, X, ChevronDown, ChevronUp, Layers
 } from 'lucide-react';
 import { streamGenerate, type GenerationInput, type MediaContact } from '@/api/client';
-import OpportunityBanner from '@/components/intel/OpportunityBanner';
-import type { Opportunity } from '@/api/radar';
 
 interface AngleGroup {
   group: string;
@@ -114,37 +111,6 @@ export default function GeneratorPage() {
     setMediaContacts(prev => prev.map((c, i) => i === index ? { ...c, [field]: value } : c));
   };
 
-  const handleSelectOpportunity = useCallback((opp: Opportunity) => {
-    const allAngleItems = new Set(allAngleGroups.flatMap(g => g.items));
-    const validAngles = (opp.prefillAngleItems ?? []).filter(a => allAngleItems.has(a));
-
-    if (opp.prefillCategory) setSelectedCategory(opp.prefillCategory);
-    if (validAngles.length > 0) {
-      setSelectedAngles(validAngles);
-      setShowAngles(true);
-      setExpandedGroups(prev => {
-        const next = new Set(prev);
-        for (const group of allAngleGroups) {
-          if (group.items.some(i => validAngles.includes(i))) next.add(group.group);
-        }
-        return next;
-      });
-    }
-    setForm(f => ({
-      ...f,
-      topic: opp.prefillTopic ?? f.topic,
-      keyFacts: opp.prefillKeyFacts ?? f.keyFacts,
-    }));
-
-    toast.success('已套用情報', {
-      description: opp.title,
-    });
-
-    requestAnimationFrame(() => {
-      document.getElementById('topic')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  }, []);
-
   const handleGenerate = useCallback(async () => {
     if (!selectedCategory || !form.topic) return;
     setIsGenerating(true);
@@ -196,10 +162,7 @@ export default function GeneratorPage() {
   const sections = ['綜合新聞', '商業/餐飲', '生活/品牌'];
 
   return (
-    <div className="flex flex-col h-full">
-      <OpportunityBanner onSelect={handleSelectOpportunity} />
-
-      <div className="flex flex-1 overflow-hidden">
+    <div className="flex h-full">
       {/* Left Panel */}
       <div className="w-[520px] border-r border-border overflow-auto p-6 space-y-5">
         <div>
@@ -520,7 +483,6 @@ export default function GeneratorPage() {
             </div>
           )}
         </div>
-      </div>
       </div>
     </div>
   );

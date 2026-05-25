@@ -23,7 +23,6 @@ console.log('[startup] PROJECT_ROOT:', PROJECT_ROOT);
 
 import generateRouter from './routes/generate';
 import adminRouter from './routes/admin';
-import radarRouter from './routes/radar';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,9 +33,6 @@ app.use(express.json({ limit: '50mb' }));
 // API routes
 app.use('/api', generateRouter);
 app.use('/api', adminRouter);
-app.use('/api', radarRouter);
-
-console.log('[startup] Radar API:', process.env.RADAR_API_BASE || 'using mock data (set RADAR_API_BASE to enable)');
 
 // Health check
 app.get('/api/health', (_req, res) => {
