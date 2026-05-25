@@ -1,236 +1,234 @@
-# 競品分析 Dashboard — 規劃文件
+# 競品分析整合計畫 — 以「Hotel News Radar」為中樞
 
-> 狀態：規劃中（尚未開工）
-> 建立日期：2026-05-24
-> 用途：等開工時直接打開這份文件，與 Claude 一起繼續推進
-
----
-
-## 一、核心問題（這個 Dashboard 要回答什麼）
-
-1. 競品（其他五星酒店、同級餐廳）最近在**做什麼活動 / 發什麼新聞稿**？
-2. 媒體和社群在**討論什麼**？主題、聲量、情感？
-3. 我們的露出 vs 競品的露出**差距在哪**？
-4. 寫新稿時，**有哪些題材機會**還沒人做？
+> 狀態：已拍板，等開工
+> 最後更新：2026-05-25
+> 重要：**方向已修正** — 不再另建競品分析系統，改以現有 `hotel-news-radar` 為情報中樞，本產生器作為消費端整合。
 
 ---
 
-## 二、整體架構（6 層）
+## 一、為什麼方向修正？
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  6. 展示層 Dashboard (React + Tremor/Recharts)          │
-│     聲量趨勢 / 主題雲 / 競品比較 / AI 洞察              │
-└──────────────────▲──────────────────────────────────────┘
-                   │ REST / SSE
-┌──────────────────┴──────────────────────────────────────┐
-│  5. API 層 (Express, 現有後端)                          │
-│     /api/competitors  /api/insights  /api/trends         │
-└──────────────────▲──────────────────────────────────────┘
-                   │
-┌──────────────────┴──────────────────────────────────────┐
-│  4. AI 處理層 (Claude API)                              │
-│     分類 / 摘要 / 主題抽取 / 情感分析 / 去重            │
-└──────────────────▲──────────────────────────────────────┘
-                   │
-┌──────────────────┴──────────────────────────────────────┐
-│  3. 儲存層                                              │
-│     Supabase (Postgres + pgvector)                       │
-└──────────────────▲──────────────────────────────────────┘
-                   │ 每日排程
-┌──────────────────┴──────────────────────────────────────┐
-│  2. 資料採集層 (Apify Actors + News API)                │
-└──────────────────▲──────────────────────────────────────┘
-                   │
-┌──────────────────┴──────────────────────────────────────┐
-│  1. 資料來源（外部）                                     │
-└─────────────────────────────────────────────────────────┘
-```
+最初規劃時不知道 `tony1229kimo/hotel-news-radar` 已存在並部署。檢視後發現雷達已涵蓋原本「競品分析 Dashboard」70% 的功能：
+
+| 原本要做的 | 雷達**已具備** |
+|----------|--------------|
+| 爬取競品新聞 | ✅ 40+ RSS feeds |
+| 排程採集 | ✅ Cron 每日 09:00 & 16:00 |
+| AI 分類 | ✅ Claude 分 4 類 |
+| 情感分析 | ✅ Sentiment |
+| 主題標籤 | ✅ Opportunity tags |
+| 摘要 | ✅ Summary |
+| 媒體效益分數 | ✅ Media value score |
+| Dashboard | ✅ 已上線 |
+| Email 推播 | ✅ 雙語日報 |
+
+**結論：以雷達為中樞，產生器作為下游消費端。**
 
 ---
 
-## 三、資料來源
+## 二、整合架構
 
-### 酒店層競品（初擬）
-- 文華東方、君悅、晶華、寒舍艾美、台北萬豪、W Hotel、香格里拉、四季、台北艾麗
-- 採集內容：官網新聞稿、活動頁、餐廳頁
+```
+                ┌─────────────────────────────────────┐
+                │   Hotel News Radar（情報中樞）       │
+                │   Next.js 15 + SQLite + Drizzle      │
+                │   Claude Haiku 4.5 + Opus 4.7        │
+                │   ✅ 已部署 (Zeabur)                  │
+                └─────────────────────────────────────┘
+                        │              ▲
+                  提供洞察 API      回寫「我們發了什麼」
+                        ▼              │
+                ┌─────────────────────────────────────┐
+                │  Press Release Generator (本專案)    │
+                │  React + Vite + Express + JSON       │
+                │  ✅ 已部署 (Zeabur)                   │
+                │                                      │
+                │  新增：情報雷達分頁                   │
+                │       首頁機會橫幅                    │
+                │       寫稿時情報側欄                  │
+                │       歷史頁效益分數                  │
+                └─────────────────────────────────────┘
+```
 
-### 餐廳/酒吧層（依各 outlet 定位對應）
-| 我們的 Outlet | 對標競品舉例 |
-|------------|------------|
-| Pier No.5（扒房） | A Cut、教父牛排、Lawry's |
-| Q Bar | Aha Saloon、Indulge、Bar Pun |
-| 自助餐 | 君悅凱菲屋、寒舍艾美 LATITUDE25 |
-| 中餐 | 晶華栢麗廳、君悅頤園 |
+### 兩個系統的角色
 
-### 通用資料源
-- Google News / News API（媒體報導）
-- Instagram / Threads / 小紅書（社群聲量，Apify 有現成 actor）
-- Google Maps / Tabelog / OpenRice（評論評分）
-- Booking / Agoda（房價評分）
-- 米其林指南、Tatler Dining、500 Bowls、Asia's 50 Best Bars（榜單）
-- Taipei Walker、美食加、ShoppingDesign（美食媒體）
+| 系統 | 角色 |
+|-----|-----|
+| 雷達 | 資料 + AI 大腦：所有外部情報的單一來源 |
+| 產生器 | 執行端：消費雷達洞察 → 寫稿 → 回寫雷達追蹤效益 |
 
 ---
 
-## 四、資料採集層（Apify）
+## 三、整合策略：A 先，B 後
 
-```
-apify-actors/
-├── hotel-press-release-scraper/   # 各酒店官網新聞稿
-├── news-search-scraper/            # Google News 關鍵字
-├── instagram-hashtag-scraper/      # IG hashtag/帳號
-├── google-maps-review-scraper/     # 餐廳評論
-└── michelin-guide-scraper/         # 榜單變動
-```
+### 階段 A：API 串接（MVP，先做）
+雷達加 endpoints，產生器透過 HTTP 呼叫。各自保留現有資料庫。
 
-- 用 Apify Schedules 排程（每日 02:00）
-- 結果 → Webhook 通知後端 → 寫入 Supabase
+### 階段 B：共用 Supabase（後續）
+雷達 SQLite + 產生器 JSON 都遷移到 Supabase，兩邊共用 schema。
+
+**不做方案 C（合併單一 app）**——雷達是 Next.js 15、產生器是 Vite + Express，技術棧不相容，硬合併要 4 週空窗期，風險不值得。
 
 ---
 
-## 五、儲存層（Supabase）
+## 四、雷達端要新增的 API
 
-### 為什麼要用 Supabase？
-現有 JSON 檔存品牌設定/歷史稿沒問題，但**競品資料每天可能新增數百筆，累積一年 = 十幾萬筆**，JSON 撐不住，也做不到 dashboard 需要的「篩選、統計、即時更新」。
+```typescript
+// 在 hotel-news-radar repo 新增
 
-### 遷移策略：不全遷，只新增
-```
-JSON 留著（不動）：
-  brand-settings.json     ← 品牌設定
-  press-releases.json     ← 自己的歷史稿
-  knowledge-base.json     ← 知識庫
+GET /api/insights/competitive-summary?days=7
+  → 競品近 7 天動態摘要
 
-Supabase 新增（給競品分析用）：
-  competitors             ← 競品清單
-  mentions                ← 每日爬到的競品資料
-  mention_insights        ← AI 分析結果
-  daily_metrics           ← Dashboard 統計
-```
+GET /api/insights/opportunities
+  → 「主題熱但 IC 還沒做」的機會清單
+  → 回傳每筆機會：{ id, title, summary, topic, competitors, suggested_angle }
 
-### 預定 Schema
-```sql
--- 競品主檔
-competitors (
-  id, name, type[hotel/restaurant/bar],
-  tier, website, created_at
-)
+GET /api/insights/topics/trending
+  → 熱門主題雲
 
--- 採集到的原始事件
-mentions (
-  id, competitor_id, source[news/social/review/release],
-  url, title, content, published_at,
-  raw_data jsonb, collected_at
-)
+GET /api/insights/by-property/:propertyId
+  → 針對某個 outlet 的相關洞察
 
--- AI 處理後的結構化資料
-mention_insights (
-  mention_id, category, sub_category, topics[],
-  sentiment, key_entities jsonb, summary,
-  embedding vector(1536)
-)
+POST /api/feedback/press-release-published
+  → 產生器寫完稿後回寫，雷達啟動 30 天媒體效益追蹤
+  → body: { release_id, title, published_at, keywords[], channels[] }
 
--- 預先計算的指標
-daily_metrics (
-  date, competitor_id, mention_count,
-  sentiment_avg, top_topics jsonb, share_of_voice
-)
+GET /api/feedback/outcomes/:release_id
+  → 取得某篇稿的媒體效益（給歷史頁顯示）
 ```
 
 ---
 
-## 六、AI 處理層（Claude）
+## 五、產生器整合（雙層）
 
-每則 mention 進來時跑一次 pipeline：
-```
-原始內容 → Claude → {
-  category: "餐飲活動" | "客房優惠" | "品牌合作" | ...,
-  topics: ["聖誕節", "下午茶", "永續"],
-  sentiment: -1 ~ 1,
-  entities: { 主廚, 合作品牌, 價格, 期間 },
-  summary: "...",
-  embedding: [...]
-}
-```
-
-去重複：URL hash + embedding 相似度 > 0.92 視為同一則。
-
----
-
-## 七、Dashboard 頁面結構
-
-整合進現有專案，新增路由 `/competitive-intel`：
+### 側邊欄結構（拍板）
 
 ```
-src/pages/competitive-intel/
-├── Overview.tsx        # 總覽
-├── Competitors.tsx     # 單一競品深度頁
-├── Topics.tsx          # 主題趨勢
-├── Opportunities.tsx   # AI 機會建議
-└── Mentions.tsx        # 原始資料列表
+🏨 臺北洲際酒店
+   新聞稿產生器
+
+  📰 新聞稿產生器          ← 強化：首頁加「今日機會」橫幅
+  🛰️  情報雷達     🆕      ← 新增
+  📚 歷史記錄              ← 強化：每筆加媒體效益分數
+  ⚙️  後台管理              ← 強化：新增「雷達設定」
 ```
 
-### Overview 頁面區塊
-| 區塊 | 視覺化 | 內容 |
-|------|--------|------|
-| 頂部 KPI | 4 個大數字卡 | 本週競品聲量、SOV、我們的聲量、新議題數 |
-| 聲量趨勢 | 折線圖 | 我們 vs 競品 30 天聲量 |
-| 競品活動熱度 | 橫條圖 | 各競品近 7 天發布數 |
-| 主題雲 | Word cloud | 本週熱門主題 |
-| 最新動態 Feed | 卡片列表 | 即時抓到的競品新聞稿 |
-| AI 每日洞察 | 文字卡 | Claude 總結「今天最值得注意的 3 件事」 |
+順序傳達工作流：寫稿 ← 看情報 → 回頭歷史。
 
-### Opportunities 頁（殺手鐧）
-讓 Claude 分析「**競品有做但我們沒做**」或「**主題熱但我們缺席**」的題材 → 直接點「**用此題材生成新聞稿**」→ 跳回新聞稿產生器並預填 prompt。
+### Layer 1：新分頁「🛰 情報雷達」
 
-> 這就是 Dashboard 和現有產品的整合價值。
+單頁 + Tab 切換：
+- 今日機會（預設）
+- 競品動態
+- 熱門主題
+- 效益追蹤
+
+每張機會卡 → `→ 用此題材寫稿` 按鈕：
+1. 跳轉 `/?intel=opp_123`
+2. 產生器自動帶入預選類別 + 參考重點 + 競品相關稿件
+
+### Layer 2：產生器首頁強化（最關鍵）
+
+打開 `GeneratorPage` 不再直接面對空白表單：
+
+```
+┌─ 🔥 今日 3 個機會 ────── [全部機會 →] ──┐
+│ [機會卡] [機會卡] [機會卡]               │
+└────────────────────────────────────────┘
+
+─── 或自行設定 ───
+
+[現有表單]
+
+┌─ 📡 相關情報（依當前選擇浮現）─────────┐
+│ 選了「餐飲」+「聖誕」→ 雷達補充：       │
+│ • 競品本月相關稿件 5 篇 [展開]         │
+│ • 媒體偏好標題寫法                     │
+│ • 主題情感：正面 82%                   │
+└────────────────────────────────────────┘
+
+[產生新聞稿] →
+```
+
+### Layer 3：歷史記錄頁強化
+
+```
+日期    標題                類別    📊 媒體效益
+12/15   聖誕下午茶開賣      餐飲   ⭐⭐⭐⭐ $42K
+12/10   跨年套房限定        客房   ⭐⭐ $8K
+12/05   Pier No.5 新主廚    餐飲   ⭐⭐⭐⭐⭐ $87K
+```
+
+點開單筆顯示：露出媒體清單、媒體價值、同期競品對比、情感分析。
+
+### Layer 4：寫完稿後的「閉環」追蹤
+
+```
+✅ 新聞稿已儲存
+🔔 要請雷達追蹤這篇的媒體效益嗎？
+
+預計發布日：[___]
+發布管道：[ ]官網 [ ]媒體名單
+主要關鍵字：[___]
+
+[略過]  [送雷達追蹤]
+```
+
+按下後呼叫雷達 `POST /api/feedback/press-release-published` → 雷達監控 30 天 → 回寫效益分數。
+
+**這是整合最值錢的功能：建立「寫稿好不好 = 媒體買不買單」的客觀指標。**
 
 ---
 
-## 八、技術選型
+## 六、開發里程碑
 
-| 元件 | 推薦 | 理由 |
-|------|------|------|
-| 圖表 | **Tremor** | 基於 Tailwind，跟 ShadCN 同生態 |
-| DB | **Supabase** | Postgres + Auth + Realtime + pgvector，免運維 |
-| 爬蟲 | **Apify** | 現成 actor 多，排程方便 |
-| 排程 | Apify Schedules / Zeabur Cron | 看負載 |
-| Embedding | **Voyage** (`voyage-3`) | 中文表現好 |
-| 通知 | Discord/Slack Webhook | 重大事件即時推送 |
+### M1（3 天）：基礎串接 + 首頁機會橫幅
+- [ ] 雷達新增 `GET /api/insights/opportunities`
+- [ ] 雷達新增 `GET /api/insights/competitive-summary`
+- [ ] 產生器：API 用戶端（`src/api/radar.ts`）
+- [ ] 產生器 `GeneratorPage` 頂部加「今日 3 個機會」橫幅
+- [ ] 機會卡點擊 → 預填表單
 
----
+### M2（3 天）：情報雷達分頁
+- [ ] 側邊欄新增「🛰️ 情報雷達」
+- [ ] 新增 `src/pages/IntelPage.tsx`
+- [ ] Tab：今日機會 / 競品動態（M2 先做這兩個）
+- [ ] 機會卡完整版（含建議切角、競品對照）
 
-## 九、開發階段建議
+### M3（2 天）：寫稿時的相關情報側欄
+- [ ] 產生器：當前類別/子類別變動時呼叫 `GET /api/insights/by-property`
+- [ ] 側欄即時顯示相關競品稿件、媒體偏好
 
-### MVP（2-3 週）— 先驗證價值
-- [ ] 5 個酒店競品 + 官網新聞稿爬蟲
-- [ ] Supabase 註冊 + 建表
-- [ ] Claude 分類 pipeline
-- [ ] Overview 頁 + Mentions 列表
+### M4（4 天）：寫完稿觸發追蹤 + 歷史頁效益
+- [ ] 雷達新增 `POST /api/feedback/press-release-published`
+- [ ] 雷達新增 `GET /api/feedback/outcomes/:release_id`
+- [ ] 雷達內部：30 天關鍵字監控邏輯（match articles → 計算 media value）
+- [ ] 產生器：寫完稿彈窗「送雷達追蹤？」
+- [ ] 產生器：歷史頁列表加效益欄位
+- [ ] 產生器：歷史單筆詳情頁加「媒體效益分析」區塊
 
-### V2（+2 週）— 加深度
-- [ ] 加入餐廳競品 + 社群資料
-- [ ] Topics / Opportunities 頁
-- [ ] 整合回新聞稿產生器（一鍵生成）
-
-### V3 — 進階
-- [ ] 評論情感分析
-- [ ] 媒體效益追蹤
-- [ ] 自動週報 Email
-
----
-
-## 十、開工前要決定的事
-
-1. **競品清單**先鎖定哪幾家？（建議 MVP 先 5 家酒店）
-2. **Supabase 帳號**註冊好了沒？
-3. **Apify 帳號**註冊好了沒？（免費 $5 額度可用）
-4. Dashboard 是**新獨立頁面**還是**整合進現有導覽**？
-5. 要不要做**使用者登入**？（Supabase Auth 順手做掉）
+### M5（1 週，後續）：後台 + Supabase 遷移
+- [ ] 後台新增「雷達設定」區塊（連線狀態、敏感度、自動追蹤開關）
+- [ ] 雷達 SQLite → Supabase Postgres
+- [ ] 產生器 JSON → Supabase（歷史稿件、媒體聯繫人）
+- [ ] 兩邊共用 Supabase Client，直接 query 不再透過 HTTP
 
 ---
 
-## 開工時的第一句話建議
+## 七、本機環境準備（開工前）
+
+- [ ] Supabase 帳號已開好 ✅
+- [ ] Apify 帳號已開好 ✅（M5 階段才用）
+- [ ] hotel-news-radar 本機可跑（`npm run dev`）
+- [ ] press-release-generator 本機可跑（`npm run dev`）
+- [ ] 兩邊 `.env` 配好 `ANTHROPIC_API_KEY`
+- [ ] 決定雷達 API 的 base URL（local dev / Zeabur 各一個）
+
+---
+
+## 八、開工時的第一句話
 
 直接跟 Claude 說：
-> 「打開 `docs/competitive-intel-plan.md`，我們從 MVP 第一步開始：幫我寫 Supabase 的建表 SQL 和 Apify 第一個爬蟲。」
+> 「打開 `docs/competitive-intel-plan.md`，從 **M1** 開始：先在 hotel-news-radar 加 `GET /api/insights/opportunities` 和 `GET /api/insights/competitive-summary` 兩個 API。」
+
+注意：M1 第一步要切換到 `hotel-news-radar` repo 開發，第二步才回到本 repo 接 API。
