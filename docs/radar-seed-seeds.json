@@ -1,5 +1,5 @@
 {
-  "_README": "SEEDS pilot 種子資料。雷達 session O1 直接拿來灌 outlets 表。6 維評分(0-5)：cuisine 菜系/price 價位/location 距離/tier 通路層級/target 客群場合/experience 體驗定位。match_total = 六維加總(滿分30)。threat_level 換算：>=24 High / 16-23 Medium / <16 Low。價格單位 NTD，均消未稅。",
+  "_README": "SEEDS pilot 種子資料。雷達 session O1 直接拿來灌 outlets 表。6 維評分(0-5)：cuisine 菜系/price 價位/location 距離/tier 通路層級/target 客群場合/experience 體驗定位。match_total = 六維加總(滿分30)。threat_level 4 級換算規則：>=24 High / 20-23 Medium-High / 14-19 Medium / <14 Low。價格單位 NTD，均消未稅。",
 
   "self_outlet": {
     "id": "khh-seeds",

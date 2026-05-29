@@ -283,7 +283,7 @@ outlets (
   market_positioning text,
   business_strength  text, -- Strong / Medium / ...
   brand_presence     text,
-  threat_level       text, -- High / Medium / Low（由 6 維評分換算）
+  threat_level       text, -- High / Medium-High / Medium / Low（由 6 維 match_total 換算）
   threat_reason      text, -- Claude 生成，雙語
   google_rating      real,
   google_review_count integer,
@@ -292,7 +292,9 @@ outlets (
   reservation_system text, -- inline / Table Check / SevenRooms / Own Web ...
 
   match_scores    text,    -- JSON: 6 維評分 { cuisine, price, location, tier, target, experience } 各 0-5
-  match_total     integer, -- 6 維加總 → 換算 threat_level
+  match_total     integer, -- 6 維加總（滿分30）→ 換算 threat_level
+                           -- 4 級規則：>=24 High / 20-23 Medium-High / 14-19 Medium / <14 Low
+                           -- 實作建議集中於 src/lib/outlet-threat.ts 純函式
   created_at      integer
 )
 
