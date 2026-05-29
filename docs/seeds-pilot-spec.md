@@ -46,6 +46,22 @@
 
 ---
 
+## 1b. 高雄洲際 6 間 Outlet 總表（複製用）/ All 6 Outlets
+
+| Outlet | 類型 type | 樓層 | Google Maps | 建檔狀態 |
+|--------|-----------|------|-------------|---------|
+| SEEDS 大地義式餐廳 | all-day | 1F | maps.app.goo.gl/55h2zF9uQLvTwRx27 | ⭐ Pilot |
+| 湛露 中餐廳 | chinese | 2F | maps.app.goo.gl/otdEzHV2RNHKCtow9 | 待 O5 |
+| WA-RA 日式餐廳（割烹+主題酒吧） | japanese | 5F | maps.app.goo.gl/o4rNso5RtBo1Bxq16 | 待 O5 |
+| 好客 HAWKER 南洋餐廳 | sea | 2F | maps.app.goo.gl/GMktHXe4rSZ3Wi9e7 | 待 O5 |
+| Delicatesse 洲際烘焙坊 | bakery | — | maps.app.goo.gl/YvixaxSZNXaey4ws6 | 待 O5 |
+| BL.T33 大廳酒吧 | bar | 1F | maps.app.goo.gl/8CiY89kK1Rgc7mr46 | 待 O5 |
+
+每間的對標競品與觀察維度略有不同（中餐看商宴婚宴、日式看 omakase 職人、酒吧看調酒師打卡），
+SEEDS pilot 跑通後，依此表逐間建檔複製。
+
+---
+
 ## 2. 資料源清單 / Data Sources
 
 > ⚠️ 重要技術前提：高雄洲際官網、Google Maps、IG、美食部落格皆**封鎖一般 HTTP 抓取（403）**。
@@ -61,16 +77,17 @@
 | 美食媒體/部落格 | Google News + 關鍵字「SEEDS 高雄洲際」 | Apify Google Search / RSS | — |
 | 愛食記 / WalkerLand | 該餐廳頁 | Apify Web Crawler | — |
 
-### 你給的 6 個 Google Maps 連結（待你標註對應餐廳）
+### 6 間餐廳的 Google Maps 連結（✅ 已對應，給 Apify Google Maps Reviews Scraper 用）
 ```
-1. https://maps.app.goo.gl/otdEzHV2RNHKCtow9  → ？
-2. https://maps.app.goo.gl/55h2zF9uQLvTwRx27  → ？
-3. https://maps.app.goo.gl/o4rNso5RtBo1Bxq16  → ？
-4. https://maps.app.goo.gl/GMktHXe4rSZ3Wi9e7  → ？
-5. https://maps.app.goo.gl/YvixaxSZNXaey4ws6  → ？
-6. https://maps.app.goo.gl/8CiY89kK1Rgc7mr46  → ？
+SEEDS 大地義式餐廳   https://maps.app.goo.gl/55h2zF9uQLvTwRx27   ← Pilot
+湛露 中餐廳          https://maps.app.goo.gl/otdEzHV2RNHKCtow9
+WA-RA 日式餐廳       https://maps.app.goo.gl/o4rNso5RtBo1Bxq16
+好客 HAWKER 南洋餐廳  https://maps.app.goo.gl/GMktHXe4rSZ3Wi9e7
+Delicatesse 洲際烘焙坊 https://maps.app.goo.gl/YvixaxSZNXaey4ws6
+BL.T33 大廳酒吧      https://maps.app.goo.gl/8CiY89kK1Rgc7mr46
 ```
-（這些短連結擋自動解析，需要你告訴我每個對應哪間餐廳，或在 Apify 裡用瀏覽器解析）
+> 短連結擋自動解析，但 Apify 的 Google Maps Reviews Scraper 可直接吃這些 URL。
+> Pilot 先接 SEEDS，其餘 5 間 O5 階段複製。
 
 ---
 
@@ -251,7 +268,7 @@ outlet_daily_metrics (
 
 ## 9. 開工前需要你提供的 / Needed Before Build
 
-1. **6 個 Google Maps 連結各對應哪間餐廳**（短連結擋解析，需你標）
+1. ~~6 個 Google Maps 連結各對應哪間餐廳~~ ✅ 已完成（見第 1b 節）
 2. **確認對標競品名單**（第 3 節，可增減）
 3. 其他 SEEDS 相關內部文件（菜單 PDF、定位 brief、媒體曝光紀錄）— 放 Drive 我可直接讀
 
