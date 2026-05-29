@@ -46,6 +46,34 @@
 
 ---
 
+## 0b. 黃金參考：台北 F&B 定位表（完工定義）/ Gold Reference
+
+> Google Drive 有一份 `InterContinental_Taipei_F&B_Positioning.xlsx`，
+> 是團隊**人工製作**的完整 F&B 競品分析。**這份就是餐廳觀察工具要自動產出並持續更新的東西。**
+> 雷達輸出應對齊團隊現有的分析語言與欄位，團隊一看就懂、可直接沿用。
+
+### 台北表的四個區塊（雷達要自動化的目標）
+1. **F&B Positioning Rank** — 每 outlet：Market Tier 市場層級、Core Positioning 核心定位、Portfolio Role 組合角色（Brand Halo / Destination Driver / Margin Powerhouse / Volume Anchor…）、Key Advantages、Brand Impact、Market Gap Opportunity、Strategic Direction
+2. **SWOT** — 每 outlet 的 Strengths / Weaknesses / Opportunities / Threats
+3. **Competitive Landscape** — 每 outlet 的競品表（欄位見下方資料模型對齊）
+4. **Social Rate** — 競品的 Google 評分、IG 粉絲數、FB、訂位系統
+
+### 團隊既有的競品欄位（雷達競品資料要對齊）
+`Menu | Cuisine Type | Lunch Price | Dinner Price | Wine/Beverage Price | Private Rooms | Market Positioning | Business Strength | Brand Presence | Threat Level | Threat Reason | Google Rating | IG Followers | FB | Reservation System`
+
+> 我設計的 6 維評分框架（第 3.0 節）= 自動算出 **Threat Level**；Threat Reason 由 Claude 生成。
+> 兩者對齊，雷達 = 把這張人工表變成「即時、自動、雙語」的活儀表板。
+
+### 台北 outlet 清單（未來台北擴充用，與高雄不同）
+DOSA（韓式 omakase, Brand Halo）、Akira Back（名廚日式, Destination Driver）、
+Rough Cuts（奢華牛排, Margin Powerhouse）、Chinese Restaurant、5F All Day Buffet、
+The Thea（lobby 下午茶）、Chinese Restaurant Bar（茶調酒）、Steakhouse Bar、NTD（義式）
+
+> 台北競品已有完整名單（如 DOSA 對標 Inita/EIKA/Ad Astra/MIZUE；Rough Cuts 對標 A Cut/教父/Morton's；
+> 中餐對標頤宮/雅閣/晶華軒/榕居；Buffet 對標饗饗/旭集/島語/栢麗廳）——台北擴充時直接匯入此表。
+
+---
+
 ## 1b. 高雄洲際 6 間 Outlet 總表（複製用）/ All 6 Outlets
 
 | Outlet | 類型 type | 樓層 | Google Maps | 建檔狀態 |
@@ -235,9 +263,36 @@ outlets (
   price_range     text,
   is_self         integer, -- 1 = 自家, 0 = 競品
   parent_outlet_id text,  -- 競品對標哪間自家 outlet
-  source_urls     text,   -- JSON: { website, gmaps, instagram, ... }
-  match_scores    text,   -- JSON: 6 維評分 { cuisine, price, location, tier, target, experience } 各 0-5（競品才有）
-  match_total     integer, -- 6 維加總，competitor 排序用
+  source_urls     text,   -- JSON: { website, gmaps, instagram, fb, reservation }
+
+  -- 自家 outlet 的策略檔案（對齊台北定位表 F&B Positioning Rank）
+  market_tier        text, -- 市場層級
+  core_positioning   text, -- 核心定位
+  portfolio_role     text, -- Brand Halo / Destination Driver / Margin Powerhouse / Volume Anchor
+  key_advantages     text,
+  market_gap         text,
+  strategic_direction text,
+  swot               text, -- JSON { s, w, o, t }
+
+  -- 競品檔案（對齊台北定位表 Competitive Landscape 欄位）
+  cuisine_type       text,
+  lunch_price        text,
+  dinner_price       text,
+  beverage_price     text,
+  private_rooms      integer,
+  market_positioning text,
+  business_strength  text, -- Strong / Medium / ...
+  brand_presence     text,
+  threat_level       text, -- High / Medium / Low（由 6 維評分換算）
+  threat_reason      text, -- Claude 生成，雙語
+  google_rating      real,
+  google_review_count integer,
+  ig_followers       text,
+  fb                 text,
+  reservation_system text, -- inline / Table Check / SevenRooms / Own Web ...
+
+  match_scores    text,    -- JSON: 6 維評分 { cuisine, price, location, tier, target, experience } 各 0-5
+  match_total     integer, -- 6 維加總 → 換算 threat_level
   created_at      integer
 )
 
@@ -320,9 +375,14 @@ outlet_daily_metrics (
 
 ### O1（3 天）：資料模型 + 一間餐廳手動灌資料
 - [ ] outlets / outlet_mentions / outlet_insights / outlet_daily_metrics schema + migration
-- [ ] SEEDS + 4 個競品建檔（用本規格書資料）
+      （outlets 欄位對齊台北定位表，見第 5 節）
+- [ ] SEEDS 自家檔案建檔（策略定位 + SWOT，用第 10b 節得獎/永續/菜單資料）
+- [ ] SEEDS 對標競品建檔（日航 SERENA、漢來海港、H2O Ripple、林皇宮）含 6 維評分
 - [ ] 手動匯入一批 Drive 新聞稿 + 公開評論當種子資料
-- [ ] `/outlets/:id` 基本頁（先顯示 mentions 列表）
+- [ ] `/outlets/:id` 基本頁（先顯示 mentions 列表 + 競品威脅排序表）
+
+> 提示：台北 `InterContinental_Taipei_F&B_Positioning.xlsx` 可寫個 import script
+> 直接灌成 outlets 競品資料，台北擴充時免手 key。
 
 ### O2（4 天）：Apify 串接
 - [ ] 設定 Google Maps Reviews Scraper（SEEDS + 競品）
