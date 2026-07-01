@@ -22,7 +22,8 @@ export async function* generatePressRelease(input: GenerationInput): AsyncGenera
   const anthropic = getClient();
 
   const stream = anthropic.messages.stream({
-    model: 'claude-sonnet-4-6',
+    // 可用 env 覆寫，換型號不必改 code（例：ANTHROPIC_MODEL=claude-opus-4-8）
+    model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5',
     max_tokens: 4096,
     system: systemPrompt,
     messages: [
