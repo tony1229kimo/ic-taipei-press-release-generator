@@ -135,8 +135,9 @@ export default function GeneratorPage() {
         setOutput(prev => prev + chunk);
         if (outputRef.current) outputRef.current.scrollTop = outputRef.current.scrollHeight;
       }
-    } catch {
-      setOutput(prev => prev + '\n\n[Error: Generation failed]');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Generation failed';
+      setOutput(prev => prev + `\n\n[Error: ${message}]`);
     } finally {
       setIsGenerating(false);
     }
