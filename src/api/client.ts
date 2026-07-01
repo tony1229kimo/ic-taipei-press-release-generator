@@ -43,7 +43,8 @@ export async function* streamGenerate(input: GenerationInput): AsyncGenerator<st
   });
 
   if (!res.ok) {
-    throw new Error('Generation failed');
+    const err = await res.json().catch(() => null);
+    throw new Error(err?.error || `Generation failed (HTTP ${res.status})`);
   }
 
   const reader = res.body?.getReader();

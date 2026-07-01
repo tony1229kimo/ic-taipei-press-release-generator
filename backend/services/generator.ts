@@ -32,7 +32,8 @@ export async function* generatePressRelease(input: GenerationInput): AsyncGenera
         content: userMessage,
       },
     ],
-    temperature: 0.7,
+    // 註：Sonnet 5 等新型號已廢棄 temperature 參數（改用 adaptive thinking），
+    // 傳入會被打回 400，故不再設定。
   });
 
   let fullText = '';
