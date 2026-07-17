@@ -17,7 +17,7 @@ const PROJECT_ROOT = path.resolve(BACKEND_DIR, '..');
 dotenv.config({ path: path.join(BACKEND_DIR, '.env'), override: false });
 dotenv.config({ path: path.join(PROJECT_ROOT, '.env'), override: false });
 
-console.log('[startup] API Key loaded:', process.env.ANTHROPIC_API_KEY ? 'yes' : 'NO');
+console.log('[startup] OpenRouter API Key loaded:', process.env.OPENROUTER_API_KEY ? 'yes' : 'NO');
 console.log('[startup] BACKEND_DIR:', BACKEND_DIR);
 console.log('[startup] PROJECT_ROOT:', PROJECT_ROOT);
 

@@ -36,7 +36,9 @@ npm run dev
 
 需要在根目錄建立 `.env`:
 ```
-ANTHROPIC_API_KEY=sk-ant-api03-...
+OPENROUTER_API_KEY=sk-or-v1-...
+# 選填：備援型號鏈（逗號分隔），預設 GPT-5.6 Sol → Terra
+OPENROUTER_MODEL=openai/gpt-5.6-sol-20260709,openai/gpt-5.6-terra-20260709
 ```
 
 ## 生產部署
@@ -45,7 +47,8 @@ ANTHROPIC_API_KEY=sk-ant-api03-...
 1. 在 Zeabur 建立專案，選擇「Deploy from GitHub」
 2. 選擇此 repo
 3. 設定環境變數：
-   - `ANTHROPIC_API_KEY` — Anthropic API 金鑰
+   - `OPENROUTER_API_KEY` — OpenRouter API 金鑰（https://openrouter.ai/keys）
+   - `OPENROUTER_MODEL` — 選填，備援型號鏈，預設 `openai/gpt-5.6-sol-20260709,openai/gpt-5.6-terra-20260709`
    - `PORT=8080` — 必要，Zeabur dedicated server 路由到 8080
 4. 綁定網域（Networking 分頁）
 5. 推送 commit 或點「重新部署」
