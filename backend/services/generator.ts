@@ -32,7 +32,7 @@ async function* streamOpenRouter(
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       // OpenRouter 建議帶的識別 header（用於 dashboard 統計，非必要）
-      'HTTP-Referer': 'https://ic-tpe-press-gen.zeabur.app',
+      'HTTP-Referer': 'https://press.ictaiwan.net',
       'X-Title': 'IC Taipei Press Release Generator',
     },
     body: JSON.stringify({

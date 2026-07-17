@@ -2,7 +2,7 @@
 
 AI 驅動的新聞稿產生器，專為臺北洲際酒店公關團隊打造。基於 IHG 品牌標準、各餐廳/酒吧的定位策略，以及歷史新聞稿作為參考基底，自動產生符合品牌調性的繁體中文新聞稿。
 
-🌐 **線上 Demo**: https://ic-tpe-press-gen.zeabur.app
+🌐 **線上 Demo**: https://press.ictaiwan.net
 
 ## 功能特色
 
