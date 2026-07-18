@@ -1,0 +1,184 @@
+{
+  "_README": "高雄洲際其餘 5 間 outlet 的種子資料（SEEDS 在 radar-seed-seeds.json）。O5 複製時灌 outlets 表。6 維評分(0-5)：cuisine/price/location/tier/target/experience。match_total 滿分30。threat_level 4 級換算規則：>=24 High / 20-23 Medium-High / 14-19 Medium / <14 Low。自家 outlet 部分欄位標 TBD，待官網/評論或內部菜單補。價格 NTD。",
+
+  "outlets": [
+    {
+      "self_outlet": {
+        "id": "khh-zhanlu",
+        "hotel": "kaohsiung",
+        "name_zh": "湛露 中餐廳",
+        "name_en": "Zhan Lu Chinese Restaurant",
+        "type": "chinese",
+        "is_self": 1,
+        "market_tier": "Premium Chinese Fine Dining 高端中餐",
+        "core_positioning": "靈感源自《詩經·小雅》，粵式為主融合經典上海菜，圓潤流線空間呈現淺海流域光感。Cantonese-led fine dining fused with classic Shanghai cuisine.",
+        "portfolio_role": "Prestige Occasion Venue / 高端宴請場域",
+        "key_advantages": "酒店開業後即訂位熱烈；商宴/家庭/婚宴需求強；2F 精緻空間",
+        "market_gap": "高雄高端粵菜競爭激烈(漢來名人坊米其林)，需以宴請場域與服務差異化",
+        "strategic_direction": "深化包廂宴請與婚宴業務；主廚季節料理；節慶商機",
+        "swot": {
+          "s": "酒店中餐營收支柱；宴請/包廂需求；詩經文化空間敘事",
+          "w": "高雄高端粵菜市場已有米其林級對手(漢來名人坊)",
+          "o": "包廂宴請、婚宴、節慶(年菜/中秋/尾牙)商機；主廚季節菜單",
+          "t": "漢來名人坊、國賓粵菜廳等同級酒店與米其林粵菜競爭"
+        },
+        "chef": "TBD",
+        "price_range": "TBD（待官網/評論補）",
+        "source_urls": {
+          "website": "https://ickaohsiung.com/restaurant/",
+          "gmaps": "https://maps.app.goo.gl/otdEzHV2RNHKCtow9"
+        }
+      },
+      "competitors": [
+        { "id": "khh-zhanlu-cmp-hilai-celebrity", "name_zh": "漢來 名人坊", "name_en": "Hi-Lai Celebrity Cuisine", "cuisine_type": "米其林粵菜 Cantonese (Michelin)", "tier": "五星×米其林", "threat_level": "High", "threat_reason": "高雄高端粵菜頭號標竿(米其林富哥)，直接競爭商宴與粵菜客群。Top benchmark for high-end Cantonese; Michelin pedigree.", "match_scores": { "cuisine": 5, "price": 5, "location": 3, "tier": 5, "target": 5, "experience": 4 }, "match_total": 27 },
+        { "id": "khh-zhanlu-cmp-ambassador-canton", "name_zh": "高雄國賓 粵菜廳", "name_en": "Canton Court, Ambassador", "cuisine_type": "Cantonese + 港點", "tier": "五星酒店", "threat_level": "High", "threat_reason": "同級酒店粵菜廳，港點與宴請客群重疊。Like-for-like hotel Cantonese with dim sum and banquet overlap.", "match_scores": { "cuisine": 5, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 3 }, "match_total": 24 },
+        { "id": "khh-zhanlu-cmp-hilai-tsuiyuan", "name_zh": "漢來 翠園粵菜", "name_en": "Tsui Yuan, Hi-Lai", "cuisine_type": "港式精緻 Cantonese", "tier": "五星酒店", "threat_level": "Medium-High", "threat_reason": "五星港式精緻，與湛露客群重疊但定位略低於名人坊。", "match_scores": { "cuisine": 5, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 2 }, "match_total": 23 },
+        { "id": "khh-zhanlu-cmp-marriott-chinese", "name_zh": "高雄萬豪 中餐/粵菜", "name_en": "Marriott Chinese", "cuisine_type": "Cantonese/Chinese", "tier": "五星酒店", "threat_level": "Medium-High", "threat_reason": "同級酒店中餐，宴請客群重疊。", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 3 }, "match_total": 23 },
+        { "id": "khh-zhanlu-cmp-yunzang", "name_zh": "韻藏中餐廳（左營）", "name_en": "Yun Zang", "cuisine_type": "精緻中餐 standalone", "tier": "獨立精緻", "threat_level": "Medium", "threat_reason": "跨區獨立精緻中餐，定位接近但地緣較遠。", "match_scores": { "cuisine": 4, "price": 3, "location": 2, "tier": 3, "target": 3, "experience": 3 }, "match_total": 18 }
+      ]
+    },
+
+    {
+      "self_outlet": {
+        "id": "khh-wara",
+        "hotel": "kaohsiung",
+        "name_zh": "WA-RA 日式餐廳",
+        "name_en": "WA-RA",
+        "type": "japanese",
+        "is_self": 1,
+        "market_tier": "Premium Japanese / Kappo 高端日式割烹",
+        "core_positioning": "5F，以江戶時期漁夫料理為靈感，稻稈大火炙燒(稻草香)，含割烹 Kappo 與主題酒吧。Edo-era inspired Japanese with straw-fired cooking; kappo + themed bar.",
+        "portfolio_role": "Destination / 職人體驗型",
+        "key_advantages": "稻草炙燒特色烹法；割烹 + 主題酒吧複合；5F 景觀",
+        "market_gap": "高雄高端日料/omakase 競爭升溫(鮨毅最難訂)，以稻草炙燒與割烹差異化",
+        "strategic_direction": "強化職人故事與季節食材敘事；omakase 體驗；主題酒吧帶動餐後社交",
+        "swot": {
+          "s": "稻草炙燒特色；割烹+酒吧複合；酒店服務",
+          "w": "高雄 omakase 名店林立，訂位稀缺性不及鮨毅",
+          "o": "職人/季節敘事；omakase 升級；餐酒搭配",
+          "t": "鮨毅(Hotel dua)、鮨割烹瑞実等酒店與獨立 omakase 競爭"
+        },
+        "chef": "TBD",
+        "price_range": "TBD（待官網/評論補 omakase 價位）",
+        "source_urls": {
+          "website": "https://ickaohsiung.com/restaurant/",
+          "gmaps": "https://maps.app.goo.gl/o4rNso5RtBo1Bxq16"
+        }
+      },
+      "competitors": [
+        { "id": "khh-wara-cmp-sushiyii", "name_zh": "鮨毅（Hotel dùa）", "name_en": "Sushi Yii", "cuisine_type": "Hotel Omakase 江戶前", "tier": "酒店 omakase", "threat_level": "High", "threat_reason": "高雄『最難訂』omakase，酒店日料標竿，稀缺性與口碑強。Kaohsiung's hardest-to-book omakase; hotel Japanese benchmark.", "match_scores": { "cuisine": 5, "price": 5, "location": 3, "tier": 4, "target": 5, "experience": 5 }, "match_total": 27 },
+        { "id": "khh-wara-cmp-mizumi", "name_zh": "鮨割烹 瑞実（左營）", "name_en": "Sushi Kappo Mizumi", "cuisine_type": "關西風割烹", "tier": "獨立割烹", "threat_level": "Medium-High", "threat_reason": "料理形態(割烹)與 WA-RA 最接近，關西白肉魚見長。Closest by kappo format.", "match_scores": { "cuisine": 5, "price": 4, "location": 2, "tier": 3, "target": 4, "experience": 5 }, "match_total": 23 },
+        { "id": "khh-wara-cmp-hilai-japanese", "name_zh": "漢來 日本料理", "name_en": "Hi-Lai Japanese", "cuisine_type": "Hotel Japanese", "tier": "五星酒店", "threat_level": "Medium-High", "threat_reason": "同級酒店日料，客群重疊。", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 3 }, "match_total": 23 },
+        { "id": "khh-wara-cmp-hochi", "name_zh": "禾鮨（鐵板+江戶前）", "name_en": "Ho Chi", "cuisine_type": "Omakase 鐵板+江戶前", "tier": "獨立 omakase", "threat_level": "Medium-High", "threat_reason": "雙主廚無菜單 $1800+10%，omakase 客群重疊。", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 3, "target": 4, "experience": 4 }, "match_total": 22 },
+        { "id": "khh-wara-cmp-risushi", "name_zh": "梨壽司（岡山）", "name_en": "Ri Sushi", "cuisine_type": "Omakase 無菜單", "tier": "獨立 omakase", "threat_level": "Medium-High", "threat_reason": "季節無菜單 $2500，惟地處岡山較遠。", "match_scores": { "cuisine": 5, "price": 4, "location": 1, "tier": 3, "target": 4, "experience": 4 }, "match_total": 21 }
+      ]
+    },
+
+    {
+      "self_outlet": {
+        "id": "khh-hawker",
+        "hotel": "kaohsiung",
+        "name_zh": "好客 HAWKER 南洋餐廳",
+        "name_en": "HAWKER",
+        "type": "sea",
+        "is_self": 1,
+        "market_tier": "Premium Southeast Asian 高端南洋",
+        "core_positioning": "以新加坡『Hawker Center』為名，原汁呈現星馬南洋經典；定位高雄獨具風格的異國料理餐廳首選。Singapore hawker-inspired authentic SE Asian.",
+        "portfolio_role": "Differentiation / 異國料理差異化首選",
+        "key_advantages": "酒店通路做星馬料理近乎獨佔；2023 開幕高規剪綵；城市連結(2026 日光海島生活節《南洋集錦巡禮》)",
+        "market_gap": "五星酒店少有星馬料理，差異化明顯；競品多為平價獨立餐廳",
+        "strategic_direction": "強化『酒店級南洋』定位與城市文化策展；暢饗體驗(Clarke Quay/Clifford Pier)；節慶南洋主題",
+        "swot": {
+          "s": "酒店通路星馬料理獨佔；城市文化策展連結；開幕話題",
+          "w": "南洋料理客單價天花板較低；客群教育(酒店吃南洋)",
+          "o": "城市活動贊助連結；南洋主題節慶；觀光客客源",
+          "t": "馬來舅台所等道地獨立餐廳以正宗+平價分流"
+        },
+        "signature": ["星洲麥片蝦", "海南雞飯", "沙嗲烤串", "新加坡肉骨茶", "馬來咖哩雞", "金沙魚皮", "椰絲球"],
+        "price_range": "南洋集錦巡禮暢饗 880/1080+10%（Clarke Quay/Clifford Pier）",
+        "chef": "余俊傑 Ken Yu（酒店行政主廚督導）",
+        "source_urls": {
+          "website": "https://ickaohsiung.com/restaurant/",
+          "gmaps": "https://maps.app.goo.gl/GMktHXe4rSZ3Wi9e7"
+        }
+      },
+      "competitors": [
+        { "id": "khh-hawker-cmp-malayjiu", "name_zh": "馬來舅台所", "name_en": "Malay Jiu", "cuisine_type": "道地馬來西亞", "tier": "獨立(馬來主廚)", "threat_level": "Medium-High", "threat_reason": "道地星馬、馬來主廚掌廚，菜系最接近；以正宗風味分流。Most authentic SE Asian competitor (Malay chef).", "match_scores": { "cuisine": 5, "price": 3, "location": 3, "tier": 2, "target": 3, "experience": 4 }, "match_total": 20 },
+        { "id": "khh-hawker-cmp-laupasat", "name_zh": "老巴剎", "name_en": "Lau Pa Sat", "cuisine_type": "新加坡風味", "tier": "獨立平價", "threat_level": "Medium", "threat_reason": "新加坡風味、份量大平價，價位帶與 HAWKER 差異大。Singapore flavors but much lower price point.", "match_scores": { "cuisine": 5, "price": 2, "location": 3, "tier": 1, "target": 2, "experience": 3 }, "match_total": 16 },
+        { "id": "khh-hawker-cmp-ruiji", "name_zh": "南洋食府銳記", "name_en": "Rui Ji Nanyang", "cuisine_type": "南洋海南雞", "tier": "獨立", "threat_level": "Medium", "threat_reason": "南洋海南雞為主，平價獨立餐廳。", "match_scores": { "cuisine": 4, "price": 2, "location": 2, "tier": 1, "target": 2, "experience": 3 }, "match_total": 14 },
+        { "id": "khh-hawker-cmp-laksalang", "name_zh": "叻沙郎", "name_en": "Laksa Lang", "cuisine_type": "叻沙/泰式 casual", "tier": "獨立平價", "threat_level": "Low", "threat_reason": "casual 叻沙/泰式鍋燒，平實定價，客群差異大。", "match_scores": { "cuisine": 3, "price": 2, "location": 2, "tier": 1, "target": 2, "experience": 2 }, "match_total": 12 }
+      ],
+      "_note": "HAWKER 在酒店通路近乎獨佔星馬料理，所有競品皆為平價獨立餐廳→相對威脅偏低，此為差異化亮點而非劣勢。"
+    },
+
+    {
+      "self_outlet": {
+        "id": "khh-delicatesse",
+        "hotel": "kaohsiung",
+        "name_zh": "Delicatesse 洲際烘焙坊",
+        "name_en": "Delicatesse",
+        "type": "bakery",
+        "is_self": 1,
+        "market_tier": "Hotel Artisan Bakery 飯店精緻烘焙",
+        "core_positioning": "手工麵包與精緻甜點，具獨立商品線(住房專案常註明不適用烘焙坊折抵)。Artisan breads & pastries as a standalone retail line.",
+        "portfolio_role": "Retail / 伴手禮與外帶營收",
+        "key_advantages": "五星酒店烘焙品質；節慶禮盒(聖誕/年節)；外帶與住客便利",
+        "market_gap": "高雄飯店烘焙以漢來糕餅小舖最強，需以明星商品與節慶禮盒建立記憶點",
+        "strategic_direction": "打造明星麵包/甜點單品；強化節慶禮盒(聖誕泰迪熊等已有操作)；外帶通路",
+        "swot": {
+          "s": "五星烘焙品質；節慶禮盒;住客客流",
+          "w": "缺乏如漢來穀物麵包的明星單品記憶點",
+          "o": "節慶禮盒、聯名、外帶電商；打卡甜點",
+          "t": "漢來糕餅小舖(銷售冠軍穀物麵包)、萬豪 M 烘焙坊"
+        },
+        "chef": "TBD",
+        "price_range": "TBD",
+        "source_urls": {
+          "website": "https://ickaohsiung.com/restaurant/",
+          "gmaps": "https://maps.app.goo.gl/YvixaxSZNXaey4ws6"
+        }
+      },
+      "competitors": [
+        { "id": "khh-deli-cmp-hilai-bakery", "name_zh": "漢來 糕餅小舖", "name_en": "Hi-Lai Bakery", "cuisine_type": "飯店烘焙", "tier": "五星酒店", "threat_level": "High", "threat_reason": "高雄飯店烘焙龍頭，穀物麵包為銷售冠軍、明星單品強。Kaohsiung's leading hotel bakery with a hero product.", "match_scores": { "cuisine": 5, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 4 }, "match_total": 25 },
+        { "id": "khh-deli-cmp-marriott-mbakery", "name_zh": "高雄萬豪 M 烘焙坊", "name_en": "M Bakery, Marriott", "cuisine_type": "飯店烘焙", "tier": "五星酒店", "threat_level": "High", "threat_reason": "同級酒店 1F 烘焙坊，直接對標。Like-for-like hotel lobby bakery.", "match_scores": { "cuisine": 5, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 3 }, "match_total": 24 },
+        { "id": "khh-deli-cmp-linpalace-bakery", "name_zh": "林皇宮 烘焙", "name_en": "Lin Palace Bakery", "cuisine_type": "飯店烘焙/禮盒", "tier": "花園飯店", "threat_level": "Medium-High", "threat_reason": "飯店伴手禮/節慶禮盒競爭。", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 4, "target": 3, "experience": 3 }, "match_total": 21 },
+        { "id": "khh-deli-cmp-artisan", "name_zh": "Lesa烘焙坊 / 胖PAN", "name_en": "Lesa / Pan", "cuisine_type": "獨立職人麵包", "tier": "獨立人氣", "threat_level": "Medium", "threat_reason": "在地職人麵包人氣高，反映麵包趨勢但通路不同。", "match_scores": { "cuisine": 4, "price": 3, "location": 2, "tier": 2, "target": 2, "experience": 3 }, "match_total": 16 }
+      ]
+    },
+
+    {
+      "self_outlet": {
+        "id": "khh-blt33",
+        "hotel": "kaohsiung",
+        "name_zh": "BL.T33 大廳酒吧",
+        "name_en": "BL.T33",
+        "type": "bar",
+        "is_self": 1,
+        "market_tier": "Lobby Bar / Afternoon Tea 大廳酒吧與午茶",
+        "core_positioning": "Bar+Lounge+Tea(命名取自新光路33號)，1F；經典午茶、調酒師精選琴酒系列、擬真藝術甜點。Lobby bar blending afternoon tea, gin cocktails and trompe-l'oeil art desserts.",
+        "portfolio_role": "Brand Atmosphere Anchor / 品牌氛圍核心",
+        "key_advantages": "1F 大廳氛圍;琴酒調酒系列;擬真藝術甜點打卡點;午茶+酒吧雙時段",
+        "market_gap": "下午茶與酒吧雙軸可同時對標飯店午茶與調酒市場",
+        "strategic_direction": "招牌琴酒調酒與季節午茶;擬真藝術甜點社群擴散;餐前酒場景",
+        "swot": {
+          "s": "雙時段(午茶+酒吧);擬真藝術甜點話題;大廳地利",
+          "w": "客單價較低;午茶與調酒市場皆競爭激烈",
+          "o": "季節主題午茶;招牌調酒;社群打卡;品牌聯名",
+          "t": "萬豪空中酒吧+京心午茶、漢來大廳午茶、H2O 調酒 lounge"
+        },
+        "signature": ["琴酒師精選系列調酒", "經典下午茶", "擬真藝術甜點"],
+        "price_range": "TBD",
+        "source_urls": {
+          "website": "https://ickaohsiung.com/restaurant/blt33",
+          "gmaps": "https://maps.app.goo.gl/8CiY89kK1Rgc7mr46"
+        }
+      },
+      "competitors": [
+        { "id": "khh-blt33-cmp-marriott-sky", "name_zh": "高雄萬豪 11F 京心 + 空中酒吧", "name_en": "Marriott Sky Bar + Cafe", "cuisine_type": "下午茶 + 空中酒吧", "tier": "五星酒店", "threat_level": "High", "threat_reason": "下午茶+酒吧雙軸最接近 BL.T33，同級酒店。Closest dual afternoon-tea + bar concept.", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 4 }, "match_total": 24 },
+        { "id": "khh-blt33-cmp-hilai-lounge", "name_zh": "漢來 大廳酒吧 / 下午茶", "name_en": "Hi-Lai Lobby Lounge", "cuisine_type": "Lobby 下午茶", "tier": "五星酒店", "threat_level": "Medium-High", "threat_reason": "同級酒店 lobby 下午茶，客群重疊。", "match_scores": { "cuisine": 4, "price": 4, "location": 3, "tier": 5, "target": 4, "experience": 3 }, "match_total": 23 },
+        { "id": "khh-blt33-cmp-h2o-poolbar", "name_zh": "H2O 水京棧 頂樓 Pool Bar / Ripple Lounge", "name_en": "H2O Pool Bar / Ripple Lounge", "cuisine_type": "調酒 lounge", "tier": "五星酒店", "threat_level": "Medium-High", "threat_reason": "調酒 lounge 場景重疊，惟距離較遠。", "match_scores": { "cuisine": 3, "price": 3, "location": 2, "tier": 5, "target": 3, "experience": 4 }, "match_total": 20 },
+        { "id": "khh-blt33-cmp-speakeasy", "name_zh": "高雄獨立 speakeasy 調酒吧（待補具體名單）", "name_en": "Local speakeasy bars (TBD)", "cuisine_type": "獨立調酒吧", "tier": "獨立", "threat_level": "Medium", "threat_reason": "獨立精釀調酒吧反映調酒趨勢，分流夜間品飲客群。", "match_scores": { "cuisine": 3, "price": 3, "location": 3, "tier": 2, "target": 3, "experience": 4 }, "match_total": 18 }
+      ]
+    }
+  ]
+}

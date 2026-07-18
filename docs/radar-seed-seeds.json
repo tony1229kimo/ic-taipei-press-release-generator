@@ -1,0 +1,105 @@
+{
+  "_README": "SEEDS pilot 種子資料。雷達 session O1 直接拿來灌 outlets 表。6 維評分(0-5)：cuisine 菜系/price 價位/location 距離/tier 通路層級/target 客群場合/experience 體驗定位。match_total = 六維加總(滿分30)。threat_level 4 級換算規則：>=24 High / 20-23 Medium-High / 14-19 Medium / <14 Low。價格單位 NTD，均消未稅。",
+
+  "self_outlet": {
+    "id": "khh-seeds",
+    "hotel": "kaohsiung",
+    "name_zh": "SEEDS 大地義式餐廳",
+    "name_en": "SEEDS",
+    "type": "all-day",
+    "is_self": 1,
+    "market_tier": "Premium All-Day / Italian Fine Dining 高端全日／義式精緻",
+    "core_positioning": "義式料理 × 永續食材，以屏東洲際永續農場與台灣職人食材重新詮釋義大利家常風味，產地到餐桌的綠色餐飲。Italian cuisine built on sustainable, farm-to-table Taiwanese ingredients.",
+    "portfolio_role": "Brand Halo / 永續品牌高度象徵",
+    "key_advantages": "2023世界奢華餐廳大獎『亞洲最佳奢華產地直送之環境友善餐廳獎』、綠色餐飲指南『綠食先行獎』；行政主廚余俊傑 Ken Yu 領軍；屏東洲際永續農場自有食材鏈；互動式義大利麵體驗",
+    "market_gap": "高雄五星酒店中，永續/產地直送定位幾無對手，環境友善是獨佔差異化",
+    "strategic_direction": "以永續故事 + 主廚敘事強化媒體曝光，深化『環境友善餐廳』品牌記憶；節慶與餐酒活動(康拓洋行/寶格麗聯名)帶動話題",
+    "swot": {
+      "s": "永續定位獨特且有國際獎項背書；自有農場食材鏈；主廚品牌；歐式浪漫氛圍",
+      "w": "義式精緻路線菜色多樣性不及專門 buffet；客單價偏高需市場教育",
+      "o": "永續餐飲為上升趨勢；產地故事與主廚聯名可放大媒體；節慶餐酒活動",
+      "t": "漢來海港等 buffet 以多樣/CP值分流；獨立義式專門店分散義式客群"
+    },
+    "signature": ["互動式義大利麵(自選麵體×4醬料,單點420起)", "帕瑪火腿布拉塔起司580", "東港櫻花蝦金沙燉飯540", "酒香焰燒海鮮分享盤(平日3880/假日5880)", "焦糖堅果冰糕260"],
+    "price_range": "午均消1200+10% / 晚均消1580+10% / 晚間套餐2280 / 假日沙拉吧buffet 1080",
+    "lunch_price": "1200+10%",
+    "dinner_price": "1580+10% (套餐2280)",
+    "chef": "余俊傑 Ken Yu (酒店行政主廚)",
+    "source_urls": {
+      "website": "https://ickaohsiung.com/restaurant/seeds-2/",
+      "gmaps": "https://maps.app.goo.gl/55h2zF9uQLvTwRx27",
+      "reservation_phone": "07-339-0303"
+    }
+  },
+
+  "competitors": [
+    {
+      "id": "khh-seeds-cmp-nikko-serena",
+      "hotel": "kaohsiung",
+      "name_zh": "高雄日航酒店 SERENA 全日餐廳",
+      "name_en": "SERENA, Nikko Kaohsiung",
+      "type": "all-day",
+      "is_self": 0,
+      "parent_outlet_id": "khh-seeds",
+      "cuisine_type": "Hotel all-day / buffet + semi-buffet",
+      "tier": "五星酒店",
+      "market_positioning": "同級酒店全日餐廳，客群與定價最貼近 SEEDS",
+      "threat_level": "High",
+      "threat_reason": "同為五星酒店全日餐廳、地緣近(亞灣/愛河)、客群與定價最直接重疊。The closest like-for-like hotel all-day competitor by tier, location and price.",
+      "match_scores": { "cuisine": 4, "price": 5, "location": 4, "tier": 5, "target": 5, "experience": 4 },
+      "match_total": 27,
+      "source_urls": { "note": "待補官網/gmaps" }
+    },
+    {
+      "id": "khh-seeds-cmp-hilai-harbour",
+      "hotel": "kaohsiung",
+      "name_zh": "漢來大飯店 海港自助餐",
+      "name_en": "Harbour Buffet, Grand Hi-Lai",
+      "type": "buffet",
+      "is_self": 0,
+      "parent_outlet_id": "khh-seeds",
+      "cuisine_type": "Premium buffet (seafood-heavy)",
+      "tier": "五星酒店",
+      "market_positioning": "高雄自助餐龍頭，海鮮與CP值口碑強",
+      "threat_level": "Medium-High",
+      "threat_reason": "以多樣性與CP值分流追求豐盛體驗的客群；雖體驗主軸(吃到飽)與 SEEDS(精緻)不同，但同為五星餐飲首選之一。Draws volume/value-seeking diners; different experience axis but a top-of-mind 5-star dining choice.",
+      "match_scores": { "cuisine": 3, "price": 3, "location": 3, "tier": 5, "target": 4, "experience": 2 },
+      "match_total": 20,
+      "source_urls": { "website": "https://www.grand-hilai.com/restaurant/" }
+    },
+    {
+      "id": "khh-seeds-cmp-h2o-ripple",
+      "hotel": "kaohsiung",
+      "name_zh": "H2O 水京棧 Ripple 義法餐廳",
+      "name_en": "Ripple, H2O Hotel",
+      "type": "all-day",
+      "is_self": 0,
+      "parent_outlet_id": "khh-seeds",
+      "cuisine_type": "Italian-French + Lounge",
+      "tier": "五星酒店",
+      "market_positioning": "義法菜系 + Lounge 調酒，菜系最接近 SEEDS",
+      "threat_level": "Medium-High",
+      "threat_reason": "菜系(義法)與 SEEDS 最接近、同為五星酒店；惟位於鼓山巨蛋商圈距亞灣較遠。Closest by cuisine and hotel tier, but located farther in Gushan.",
+      "match_scores": { "cuisine": 5, "price": 4, "location": 2, "tier": 5, "target": 4, "experience": 3 },
+      "match_total": 23,
+      "source_urls": { "website": "https://www.h2ohotel.com.tw/zh-tw/dining" }
+    },
+    {
+      "id": "khh-seeds-cmp-linpalace",
+      "hotel": "kaohsiung",
+      "name_zh": "林皇宮 森林百匯 buffet",
+      "name_en": "Lin Palace Buffet",
+      "type": "buffet",
+      "is_self": 0,
+      "parent_outlet_id": "khh-seeds",
+      "cuisine_type": "Premium buffet",
+      "tier": "花園飯店",
+      "market_positioning": "家庭與婚宴客群的高端 buffet",
+      "threat_level": "Medium",
+      "threat_reason": "家庭/婚宴/慶祝客群與 SEEDS 部分重疊；菜系與體驗主軸差異較大。Overlaps on family/celebration occasions but differs in cuisine and experience.",
+      "match_scores": { "cuisine": 3, "price": 3, "location": 3, "tier": 4, "target": 3, "experience": 2 },
+      "match_total": 18,
+      "source_urls": { "note": "待補" }
+    }
+  ]
+}
