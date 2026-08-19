@@ -3,8 +3,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Copy, Check, Clock, Newspaper } from 'lucide-react';
+import { Copy, Check, Clock, Newspaper, Share2, Loader2 } from 'lucide-react';
 import { fetchApi, type GenerationRecord } from '@/api/client';
+import { shareToLine } from '@/lib/liff';
 
 const categoryLabels: Record<string, string> = {
   general: '綜合新聞',
@@ -22,6 +23,7 @@ export default function HistoryPage() {
   const [history, setHistory] = useState<GenerationRecord[]>([]);
   const [selected, setSelected] = useState<GenerationRecord | null>(null);
   const [copied, setCopied] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,6 +41,16 @@ export default function HistoryPage() {
     navigator.clipboard.writeText(selected.output);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShare = async () => {
+    if (!selected) return;
+    setSharing(true);
+    try {
+      await shareToLine(selected.topic, selected.output);
+    } finally {
+      setSharing(false);
+    }
   };
 
   if (loading) {
@@ -111,10 +123,18 @@ export default function HistoryPage() {
                   {new Date(selected.timestamp).toLocaleString('zh-TW')}
                 </p>
               </div>
-              <Button variant="outline" size="sm" onClick={handleCopy}>
-                {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
-                {copied ? '已複製' : '複製'}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleCopy}>
+                  {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
+                  {copied ? '已複製' : '複製'}
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleShare} disabled={sharing}>
+                  {sharing
+                    ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />
+                    : <Share2 className="w-3.5 h-3.5 mr-1" />}
+                  分享到 LINE
+                </Button>
+              </div>
             </div>
             <ScrollArea className="flex-1 p-6">
               <div className="max-w-2xl mx-auto">
