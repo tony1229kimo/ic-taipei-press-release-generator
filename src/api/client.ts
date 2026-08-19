@@ -139,6 +139,13 @@ export interface BrandStandards {
   customNotes: string;
 }
 
+export interface SourcePathInfo {
+  sourcePath: string;
+  resolvedPrDir: string | null;
+  exists: boolean;
+  candidates: string[];
+}
+
 export interface GenerationRecord {
   id: string;
   timestamp: string;

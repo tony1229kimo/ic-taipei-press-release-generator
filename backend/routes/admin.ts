@@ -13,6 +13,7 @@ import {
   type BrandStandards,
 } from '../services/knowledgeBase';
 import { extractDocument } from '../services/documentExtractor';
+import { DEFAULT_SOURCE_PATH, prDirCandidates, resolvePrDir } from '../config';
 
 const router = Router();
 
@@ -156,11 +157,31 @@ router.post('/admin/upload', upload.single('file'), async (req: Request, res: Re
   }
 });
 
+// GET /api/admin/source-path
+// Lets the admin UI prefill the reindex form instead of hardcoding a path.
+router.get('/admin/source-path', (_req: Request, res: Response) => {
+  const resolved = resolvePrDir(DEFAULT_SOURCE_PATH);
+  res.json({
+    sourcePath: DEFAULT_SOURCE_PATH,
+    resolvedPrDir: resolved,
+    exists: resolved !== null,
+    candidates: prDirCandidates(DEFAULT_SOURCE_PATH),
+  });
+});
+
 // POST /api/admin/reindex
 router.post('/admin/reindex', async (req: Request, res: Response) => {
   try {
-    const sourcePath = req.body.sourcePath || path.resolve('C:/Users/smtony/Desktop/Claude/新聞稿產生器');
+    const sourcePath = (req.body.sourcePath || '').trim() || DEFAULT_SOURCE_PATH;
     console.log('[reindex] Source path:', sourcePath);
+
+    // Fail before opening the SSE stream so the client gets a real HTTP error.
+    if (!resolvePrDir(sourcePath)) {
+      res.status(400).json({
+        error: `找不到 PR 資料夾。已嘗試：${prDirCandidates(sourcePath).join('、')}`,
+      });
+      return;
+    }
 
     // Set up SSE for progress
     res.setHeader('Content-Type', 'text/event-stream');
