@@ -8,9 +8,10 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
   Newspaper, Briefcase, Heart, Loader2, Copy, Check, RotateCcw, Download,
-  Sparkles, ChevronRight, UserPlus, X, ChevronDown, ChevronUp, Layers
+  Sparkles, ChevronRight, UserPlus, X, ChevronDown, ChevronUp, Layers, Share2
 } from 'lucide-react';
 import { streamGenerate, type GenerationInput, type MediaContact } from '@/api/client';
+import { shareToLine } from '@/lib/liff';
 
 interface AngleGroup {
   group: string;
@@ -39,7 +40,7 @@ const allAngleGroups: AngleGroup[] = [
   { group: '節慶活動', section: '生活/品牌', icon: '🎄', items: ['聖誕/跨年', '農曆新年', '情人節', '母親節/父親節', '中秋節', '萬聖節'] },
   { group: 'CSR與永續', section: '生活/品牌', icon: '🌱', items: ['公益活動/捐贈', '環境永續行動', '在地社區連結', '弱勢關懷'] },
   { group: '品牌聯名與藝文', section: '生活/品牌', icon: '🎨', items: ['精品品牌聯名', '藝術家/設計師合作', '文化展覽/策展', '音樂/表演活動'] },
-  { group: '生活風格', section: '生活/品牌', icon: '✨', items: ['水療SPA體驗', '健身/瑜珈活動', '花藝/香氛體驗', '季節限定企劃'] },
+  { group: '生活風格', section: '生活/品牌', icon: '✨', items: ['水療SPA體驗', '健身/瑜伽活動', '花藝/香氛體驗', '季節限定企劃'] },
 ];
 
 const categories = [
@@ -88,6 +89,8 @@ export default function GeneratorPage() {
   const [output, setOutput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [shareError, setShareError] = useState('');
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -148,6 +151,17 @@ export default function GeneratorPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [output]);
+
+  const handleShare = useCallback(async () => {
+    setSharing(true);
+    try {
+      const res = await shareToLine(form.topic, output);
+      if (!res.ok && !res.cancelled) setShareError(res.message);
+      else setShareError('');
+    } finally {
+      setSharing(false);
+    }
+  }, [output, form.topic]);
 
   const handleDownload = useCallback(() => {
     const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
@@ -456,12 +470,23 @@ export default function GeneratorPage() {
               <Button variant="outline" size="sm" onClick={handleDownload}>
                 <Download className="w-3.5 h-3.5 mr-1" />下載
               </Button>
+              <Button variant="outline" size="sm" onClick={handleShare} disabled={sharing || isGenerating}>
+                {sharing
+                  ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />
+                  : <Share2 className="w-3.5 h-3.5 mr-1" />}
+                分享到 LINE
+              </Button>
               <Button variant="outline" size="sm" onClick={() => { setOutput(''); handleGenerate(); }}>
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />重新產生
               </Button>
             </div>
           )}
         </div>
+        {shareError && (
+          <div className="mx-6 mt-4 text-sm text-red-700 bg-red-50 p-3 rounded-lg">
+            分享失敗：{shareError}
+          </div>
+        )}
         <div ref={outputRef} className="flex-1 overflow-auto p-6">
           {output ? (
             <div className="max-w-2xl mx-auto">
