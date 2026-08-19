@@ -11,6 +11,7 @@ AI 驅動的新聞稿產生器，專為臺北洲際酒店公關團隊打造。�
 - **可自訂媒體聯繫人** — 每篇新聞稿可臨時覆蓋預設聯繫人
 - **知識庫管理後台** — 上傳新的品牌標準 PDF/DOCX、重新索引、編輯品牌設定
 - **即時串流輸出** — 使用 Claude API SSE 串流，一邊產生一邊顯示
+- **分享到 LINE** — 產生頁與歷史記錄皆可一鍵分享；設定 LIFF 後可直接選擇聊天室發送
 - **SKILL.md 可攜式技能** — 讓任何 AI Agent 都能理解並沿用此系統
 
 ## 技術架構
@@ -34,12 +35,56 @@ npm install
 npm run dev
 ```
 
-需要在根目錄建立 `.env`:
+需要在根目錄建立 `.env`（可從 `.env.example` 複製）:
 ```
 OPENROUTER_API_KEY=sk-or-v1-...
 # 選填：備援型號鏈（逗號分隔），預設 GPT-5.6 Sol → Terra
 OPENROUTER_MODEL=openai/gpt-5.6-sol-20260709,openai/gpt-5.6-terra-20260709
+# 選填：新聞稿檔案庫路徑（見「知識庫來源路徑」）
+PR_SOURCE_PATH=C:\Users\你的帳號\...\Desktop\Claude
+# 選填：LINE LIFF ID（見「LINE LIFF 設定」）
+VITE_LIFF_ID=
 ```
+
+## 知識庫來源路徑
+
+後台「重新索引」會掃描來源資料夾底下的 `PR/` 目錄。支援兩種擺放方式，會自動偵測：
+
+```
+<來源資料夾>/PR/…              ← 直接放
+<來源資料夾>/新聞稿產生器/PR/…   ← 舊版巢狀結構
+```
+
+設定方式（優先順序由高到低）：
+1. 後台 →「重新索引」分頁的「來源資料夾」欄位（可臨時修改）
+2. 環境變數 `PR_SOURCE_PATH`
+3. `backend/config.ts` 的 `DEFAULT_SOURCE_PATH`
+
+> ⚠️ 這個功能只有在**伺服器跑在存放檔案庫的那台機器上**才有作用。線上部署（Zeabur 容器）讀不到本機 Windows 路徑，後台會顯示「找不到」屬正常。
+
+若路徑錯誤或資料夾內沒有任何 `.docx` / `.pdf`，索引會**中止並保留現有知識庫**，不會覆蓋。
+
+## LINE LIFF 設定
+
+未設定 `VITE_LIFF_ID` 時，「分享到 LINE」仍可使用，會開啟 LINE 的分享網址；設定後則能在 LINE App 內直接挑選聊天室或群組傳送。
+
+1. 前往 [LINE Developers Console](https://developers.line.biz/console/)
+2. 建立（或選擇）一個 **LINE Login** channel
+3. 到 **LIFF** 分頁 →「Add」，填入：
+   - **Endpoint URL**: `https://press.ictaiwan.net`
+   - **Size**: Full
+   - **Scopes**: 勾選 `profile`、`openid`
+   - **Module mode / Share target picker**: 開啟 **Share target picker**（分享到聊天室需要）
+4. 複製產生的 **LIFF ID**（形如 `2000000000-abcdefgh`）
+5. 設為環境變數 `VITE_LIFF_ID` 後**重新 build**（Vite 在 build 時就把值編進 bundle，改了要重新部署）
+
+你的 LIFF link 即為：
+
+```
+https://liff.line.me/<你的 LIFF ID>
+```
+
+把這個連結貼到 LINE 聊天室或設為官方帳號選單，點擊就會在 LINE 內開啟本系統。
 
 ## 生產部署
 
@@ -50,6 +95,7 @@ OPENROUTER_MODEL=openai/gpt-5.6-sol-20260709,openai/gpt-5.6-terra-20260709
    - `OPENROUTER_API_KEY` — OpenRouter API 金鑰（https://openrouter.ai/keys）
    - `OPENROUTER_MODEL` — 選填，備援型號鏈，預設 `openai/gpt-5.6-sol-20260709,openai/gpt-5.6-terra-20260709`
    - `PORT=8080` — 必要，Zeabur dedicated server 路由到 8080
+   - `VITE_LIFF_ID` — 選填，LINE LIFF ID；**build 時就會被編入 bundle**，修改後需重新部署
 4. 綁定網域（Networking 分頁）
 5. 推送 commit 或點「重新部署」
 
