@@ -18,6 +18,7 @@ import {
   type DocumentSummary,
   type BrandStandards,
   type KBStats,
+  type SourcePathInfo,
 } from '@/api/client';
 
 const categoryLabels: Record<string, string> = {
@@ -471,6 +472,17 @@ function IndexTool() {
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [result, setResult] = useState<{ totalDocuments: number } | null>(null);
   const [error, setError] = useState('');
+  const [sourcePath, setSourcePath] = useState('');
+  const [pathInfo, setPathInfo] = useState<SourcePathInfo | null>(null);
+
+  useEffect(() => {
+    fetchApi<SourcePathInfo>('/admin/source-path')
+      .then(info => {
+        setPathInfo(info);
+        setSourcePath(info.sourcePath);
+      })
+      .catch(console.error);
+  }, []);
 
   const handleReindex = async () => {
     setIndexing(true);
@@ -482,8 +494,13 @@ function IndexTool() {
       const res = await fetch('/api/admin/reindex', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sourcePath: 'C:\\Users\\smtony\\Desktop\\Claude\\新聞稿產生器' }),
+        body: JSON.stringify({ sourcePath }),
       });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error || `Reindex failed (HTTP ${res.status})`);
+      }
 
       const reader = res.body?.getReader();
       if (!reader) throw new Error('No response body');
@@ -532,9 +549,42 @@ function IndexTool() {
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">
-          掃描 <code className="bg-muted px-1.5 py-0.5 rounded text-xs">新聞稿產生器/PR/</code> 目錄，
+          掃描來源資料夾底下的 <code className="bg-muted px-1.5 py-0.5 rounded text-xs">PR/</code> 目錄，
           萃取所有 DOCX 和 PDF 文件的內容並建立索引。
         </p>
+
+        <div className="space-y-2">
+          <Label htmlFor="sourcePath" className="text-sm font-medium">來源資料夾</Label>
+          <Input
+            id="sourcePath"
+            value={sourcePath}
+            onChange={e => setSourcePath(e.target.value)}
+            placeholder="C:\Users\你的帳號\...\Desktop\Claude"
+            disabled={indexing}
+            className="font-mono text-xs"
+          />
+          {pathInfo && (
+            pathInfo.exists ? (
+              <p className="text-xs text-green-700 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                已找到：<code className="font-mono">{pathInfo.resolvedPrDir}</code>
+              </p>
+            ) : (
+              <div className="text-xs text-amber-700 space-y-1">
+                <p className="flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  伺服器上找不到此路徑（在本機 Windows 執行時才會存在）。已嘗試：
+                </p>
+                <ul className="pl-5 list-disc font-mono">
+                  {pathInfo.candidates.map(c => <li key={c}>{c}</li>)}
+                </ul>
+              </div>
+            )
+          )}
+          <p className="text-xs text-muted-foreground">
+            預設值可用環境變數 <code className="bg-muted px-1 py-0.5 rounded">PR_SOURCE_PATH</code> 覆寫。
+          </p>
+        </div>
 
         {indexing && (
           <div className="space-y-2">
@@ -563,7 +613,7 @@ function IndexTool() {
         <Button
           className="bg-gold hover:bg-gold-light text-white"
           onClick={handleReindex}
-          disabled={indexing}
+          disabled={indexing || !sourcePath.trim()}
         >
           {indexing ? (
             <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
