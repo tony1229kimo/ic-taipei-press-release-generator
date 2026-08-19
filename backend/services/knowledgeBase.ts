@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { extractDocument, scanDirectory, type ExtractedDocument } from './documentExtractor';
+import { prDirCandidates, resolvePrDir } from '../config';
 
 export interface IndexedDocument {
   id: string;
@@ -201,8 +202,21 @@ export function getDefaultBrandStandards(): BrandStandards {
 }
 
 export async function indexDocuments(sourcePath: string, onProgress?: (current: number, total: number) => void): Promise<PressReleaseIndex> {
-  const prDir = path.join(sourcePath, 'PR');
+  const prDir = resolvePrDir(sourcePath);
+  if (!prDir) {
+    throw new Error(
+      `找不到 PR 資料夾。已嘗試：\n${prDirCandidates(sourcePath)
+        .map((c) => `  • ${c}`)
+        .join('\n')}\n請確認路徑正確，且該資料夾底下有 PR 子目錄。`
+    );
+  }
+
   const files = await scanDirectory(prDir);
+  // A zero-file scan would otherwise overwrite the existing index with an empty
+  // one, silently destroying the archive. Bail out instead.
+  if (files.length === 0) {
+    throw new Error(`${prDir} 底下沒有任何 .docx / .pdf 文件，已中止索引以保留現有知識庫。`);
+  }
 
   const index: PressReleaseIndex = {
     version: '1.0',
