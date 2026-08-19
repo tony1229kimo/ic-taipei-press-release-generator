@@ -40,7 +40,7 @@ const allAngleGroups: AngleGroup[] = [
   { group: '節慶活動', section: '生活/品牌', icon: '🎄', items: ['聖誕/跨年', '農曆新年', '情人節', '母親節/父親節', '中秋節', '萬聖節'] },
   { group: 'CSR與永續', section: '生活/品牌', icon: '🌱', items: ['公益活動/捐贈', '環境永續行動', '在地社區連結', '弱勢關懷'] },
   { group: '品牌聯名與藝文', section: '生活/品牌', icon: '🎨', items: ['精品品牌聯名', '藝術家/設計師合作', '文化展覽/策展', '音樂/表演活動'] },
-  { group: '生活風格', section: '生活/品牌', icon: '✨', items: ['水療SPA體驗', '健身/瑜伽活動', '花藝/香氛體驗', '季節限定企劃'] },
+  { group: '生活風格', section: '生活/品牌', icon: '✨', items: ['水療SPA體驗', '健身/瑜珈活動', '花藝/香氛體驗', '季節限定企劃'] },
 ];
 
 const categories = [
